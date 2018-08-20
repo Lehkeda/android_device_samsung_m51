@@ -30,6 +30,9 @@ PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += \
     $(DEVICE_PATH)/overlay-lineage/lineage-sdk \
     $(DEVICE_PATH)/overlay-lineage/packages/apps/Snap
 
+PRODUCT_PACKAGES += \
+    NoCutoutOverlay
+
 # No A/B
 AB_OTA_UPDATER := false
 
