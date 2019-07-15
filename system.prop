@@ -42,3 +42,6 @@ vendor.display.enable_default_color_mode=1
 debug.sdm.support_writeback=0
 debug.sf.disable_backpressure=1
 debug.sf.enable_hwc_vds=1
+
+# Charger
+ro.charger.enable_suspend=true
