@@ -21,7 +21,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Inherit from m51 device makefile
-$(call inherit-product, device/samasung/m51/device.mk)
+$(call inherit-product, device/samsung/m51/device.mk)
 
 # Inherit RR stuff
 $(call inherit-product, vendor/rr/config/common_full_phone.mk)
