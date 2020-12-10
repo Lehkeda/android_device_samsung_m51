@@ -18,8 +18,8 @@
 
 set -e
 
-DEVICE=wasabi
-VENDOR=realme
+DEVICE=m51
+VENDOR=samsung
 
 INITIAL_COPYRIGHT_YEAR=2020
 

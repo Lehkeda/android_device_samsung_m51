@@ -14,18 +14,21 @@
 # limitations under the License.
 #
 
+# Inherit from those products. Most specific first.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/embedded.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
-# Inherit from wasabi device makefile
+# Inherit from m51 device makefile
 $(call inherit-product, device/samasung/m51/device.mk)
 
-$(call inherit-product, vendor/pb/config/common.mk)
-
 # Inherit RR stuff
-#$(call inherit-product, vendor/rr/config/common_full_phone.mk)
-#$(call inherit-product, vendor/rr/config/data_only.mk)
+$(call inherit-product, vendor/rr/config/common_full_phone.mk)
+(call inherit-product, vendor/rr/config/data_only.mk)
 
 # RR Wallpapers
-#BUILD_RR_WALLPAPERS := true
+BUILD_RR_WALLPAPERS := true
 
 # RR build type
 #RR_BUILDTYPE := Official

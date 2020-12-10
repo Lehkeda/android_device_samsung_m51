@@ -20,7 +20,7 @@ DEVICE_PATH := device/samsung/m51
 $(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
 # Inherit vendor
-$(call inherit-product, vendor/samsung/m51/m51-vendor.mk)
+#$(call inherit-product, vendor/samsung/m51/m51-vendor.mk)
 
 # Define Dynamic Partition support
 PRODUCT_TARGET_VNDK_VERSION := 29
