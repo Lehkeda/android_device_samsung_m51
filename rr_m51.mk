@@ -25,7 +25,7 @@ $(call inherit-product, device/samasung/m51/device.mk)
 
 # Inherit RR stuff
 $(call inherit-product, vendor/rr/config/common_full_phone.mk)
-(call inherit-product, vendor/rr/config/data_only.mk)
+$(call inherit-product, vendor/rr/config/data_only.mk)
 
 # RR Wallpapers
 BUILD_RR_WALLPAPERS := true
@@ -33,8 +33,10 @@ BUILD_RR_WALLPAPERS := true
 # RR build type
 #RR_BUILDTYPE := Official
 
+PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/samsung/m51/recovery/root,recovery/root)
+
 # Device identifier. This must come after all inclusions.
-PRODUCT_NAME := omni_m51
+PRODUCT_NAME := rr_m51
 PRODUCT_DEVICE := m51
 PRODUCT_BRAND := Samsung
 PRODUCT_MODEL := SM-M515F
