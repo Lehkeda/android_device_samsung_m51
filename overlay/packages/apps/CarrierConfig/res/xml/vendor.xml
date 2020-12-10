@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<carrier_config_list>
+    <carrier_config>
+        <boolean name="config_oppo_erlvt_off_bool" value="true" />
+		
+		<!-- HD/VOLTE icon support -->
+        <boolean name="config_update_service_status" value="true"/>
+        <boolean name="config_update_volte_icon" value="true"/>
+
+		 <!-- show VoLTE for all -->
+        <boolean name="carrier_volte_available_bool" value="true" />
+        <boolean name="carrier_vt_available_bool" value="true" />
+		<boolean name="carrier_wfc_ims_available_bool" value="true" />
+    </carrier_config>
+</carrier_config_list>
+
+       

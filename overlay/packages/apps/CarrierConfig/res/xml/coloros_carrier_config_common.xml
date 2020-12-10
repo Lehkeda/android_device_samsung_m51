@@ -1,0 +1,937 @@
+<?xml version="1.0" encoding="utf-8"?>
+<carrier_config_list>
+    <carrier_config operator="ALL">
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <int name="config_oppo_5g_pref_default" value="1" />
+        <int name="fiveg_visible" value="0" />
+        <int name="smart5g_status" value="1" />
+        <int name="smart5g_visible" value="1" />
+        <boolean name="show_network_mode" value="true" />
+    </carrier_config>
+    <carrier_config operator="CMCC">
+        <string-array name="mccmnc" num="5">
+            <item value="46000" />
+            <item value="46002" />
+            <item value="46004" />
+            <item value="46007" />
+            <item value="46008" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+        <int name="fiveg_visible" value="1" />
+        <int name="config_oppo_5g_pref_default" value="0" />
+        <int name="smart5g_status" value="0" />
+        <boolean name="show_network_mode" value="false" />
+        <boolean name="config_oppo_lte_preferred_for_second_slot" value="true" />
+    </carrier_config>
+    <carrier_config operator="CU">
+        <string-array name="mccmnc" num="2">
+            <item value="46001" />
+            <item value="46009" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="show_network_mode" value="true" />
+        <boolean name="config_oppo_lte_preferred_for_second_slot" value="true" />
+    </carrier_config>
+    <carrier_config operator="CT">
+        <string-array name="mccmnc" num="2">
+            <item value="46003" />
+            <item value="46011" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="show_network_mode" value="true" />
+        <boolean name="config_oppo_lte_preferred_for_second_slot" value="true" />
+    </carrier_config>
+    <carrier_config operator="JIO">
+        <string-array name="mccmnc" num="22">
+            <item value="405840" />
+            <item value="405854" />
+            <item value="405855" />
+            <item value="405856" />
+            <item value="405857" />
+            <item value="405858" />
+            <item value="405859" />
+            <item value="405860" />
+            <item value="405861" />
+            <item value="405862" />
+            <item value="405863" />
+            <item value="405864" />
+            <item value="405865" />
+            <item value="405866" />
+            <item value="405867" />
+            <item value="405868" />
+            <item value="405869" />
+            <item value="405870" />
+            <item value="405871" />
+            <item value="405872" />
+            <item value="405873" />
+            <item value="405874" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Airtel">
+        <string-array name="mccmnc" num="24">
+            <item value="40400" />
+            <item value="40402" />
+            <item value="40403" />
+            <item value="40410" />
+            <item value="40416" />
+            <item value="40431" />
+            <item value="40440" />
+            <item value="40445" />
+            <item value="40449" />
+            <item value="40470" />
+            <item value="40490" />
+            <item value="40492" />
+            <item value="40493" />
+            <item value="40494" />
+            <item value="40495" />
+            <item value="40496" />
+            <item value="40497" />
+            <item value="40498" />
+            <item value="40551" />
+            <item value="40552" />
+            <item value="40553" />
+            <item value="40554" />
+            <item value="40555" />
+            <item value="40556" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Singapore">
+        <string-array name="mccmnc" num="6">
+            <item value="52501" />
+            <item value="52502" />
+            <item value="52503" />
+            <item value="52507" />
+            <item value="52508" />
+            <item value="52510" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Singapore-GT">
+        <string-array name="mccmnc" num="1">
+            <item value="52505" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Taiwan">
+        <string-array name="mccmnc" num="2">
+            <item value="46602" />
+            <item value="46605" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="FET">
+        <string-array name="mccmnc" num="1">
+            <item value="46601" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="TStar">
+        <string-array name="mccmnc" num="1">
+            <item value="46689" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="CHT">
+        <string-array name="mccmnc" num="1">
+            <item value="46692" />
+        </string-array>
+        <int name="volte_status" value="0" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="TWMobile">
+        <string-array name="mccmnc" num="1">
+            <item value="46697" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Thailand">
+        <string-array name="mccmnc" num="6">
+            <item value="52000" />
+            <item value="52001" />
+            <item value="52003" />
+            <item value="52004" />
+            <item value="52005" />
+            <item value="52018" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Telstra">
+        <string-array name="mccmnc" num="3">
+            <item value="50501" />
+            <item value="50571" />
+            <item value="50572" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+        <int name="smart5g_visible" value="0" />
+    </carrier_config>
+    <carrier_config operator="Vodafone">
+        <string-array name="mccmnc" num="2">
+            <item value="50503" />
+            <item value="50506" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <int name="smart5g_visible" value="0" />
+    </carrier_config>
+    <carrier_config operator="Rakuten">
+        <string-array name="mccmnc" num="1">
+            <item value="44011" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Au">
+        <string-array name="mccmnc" num="2">
+            <item value="44050" />
+            <item value="44051" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Docomo">
+        <string-array name="mccmnc" num="1">
+            <item value="44010" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="SoftBank">
+        <string-array name="mccmnc" num="1">
+            <item value="44020" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Orange">
+        <string-array name="mccmnc" num="4">
+            <item value="20801" />
+            <item value="20802" />
+            <item value="20829" />
+            <item value="20891" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+    </carrier_config>
+    <carrier_config operator="EE">
+        <string-array name="mccmnc" num="2">
+            <item value="23430" />
+            <item value="23433" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+    </carrier_config>
+    <carrier_config operator="O2">
+        <string-array name="mccmnc" num="1">
+            <item value="23002" />
+        </string-array>
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="1" />
+    </carrier_config>
+    <carrier_config operator="3UK">
+        <string-array name="mccmnc" num="1">
+            <item value="23420" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+    </carrier_config>
+    <carrier_config operator="SWISSCOM">
+        <string-array name="mccmnc" num="2">
+            <item value="22801" />
+            <item value="29501" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+    </carrier_config>
+    <carrier_config operator="T-Mobile">
+        <string-array name="mccmnc" num="1">
+            <item value="20416" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="1" />
+    </carrier_config>
+    <carrier_config operator="Tele2">
+        <string-array name="mccmnc" num="1">
+            <item value="20402" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="1" />
+    </carrier_config>
+    <carrier_config operator="Turkey">
+        <string-array name="mccmnc" num="1">
+            <item value="28602" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Turkcell">
+        <string-array name="mccmnc" num="1">
+            <item value="28601" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Turkey-Turk-Telekom">
+        <string-array name="mccmnc" num="1">
+            <item value="28603" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Turkey-Turk-Telekom">
+        <string-array name="mccmnc" num="1">
+            <item value="28603" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Zain">
+        <string-array name="mccmnc" num="2">
+            <item value="42004" />
+            <item value="42019" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+    </carrier_config>
+    <carrier_config operator="Vodafone">
+        <string-array name="mccmnc" num="1">
+            <item value="20404" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="TEST SIM">
+        <string-array name="mccmnc" num="1">
+            <item value="00101" />
+        </string-array>
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+    </carrier_config>
+    <carrier_config operator="ETISALAT">
+        <string-array name="mccmnc" num="1">
+            <item value="42402" />
+        </string-array>
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+    </carrier_config>
+    <carrier_config operator="France-BOUYGUES">
+        <string-array name="mccmnc" num="3">
+            <item value="20820" />
+            <item value="20821" />
+            <item value="20888" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+    </carrier_config>
+    <carrier_config operator="SFR">
+        <string-array name="mccmnc" num="4">
+            <item value="20809" />
+            <item value="20810" />
+            <item value="20811" />
+            <item value="20813" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Italy-TIM">
+        <string-array name="mccmnc" num="1">
+            <item value="22201" />
+        </string-array>
+        <int name="smart5g_visible" value="0" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+    </carrier_config>
+    <carrier_config operator="OPTUS">
+        <string-array name="mccmnc" num="1">
+            <item value="50502" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+        <int name="smart5g_visible" value="0" />
+    </carrier_config>
+    <carrier_config operator="ERICSSON LAB">
+        <string-array name="mccmnc" num="7">
+            <item value="24280" />
+            <item value="24284" />
+            <item value="240680" />
+            <item value="240681" />
+            <item value="24067" />
+            <item value="24813" />
+            <item value="24077" />
+        </string-array>
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+    </carrier_config>
+    <carrier_config operator="Spain-Orange">
+        <string-array name="mccmnc" num="1">
+            <item value="21403" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="NL-KPN">
+        <string-array name="mccmnc" num="1">
+            <item value="20408" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="1" />
+    </carrier_config>
+    <carrier_config operator="UK-Vodafone">
+        <string-array name="mccmnc" num="1">
+            <item value="23415" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="1" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+        <boolean name="config_oppo_show_3g_only" value="true" />
+        <int name="fiveg_visible" value="0" />
+        <int name="config_oppo_5g_pref_default" value="1" />
+        <int name="smart5g_status" value="0" />
+        <int name="smart5g_visible" value="0" />
+    </carrier_config>
+    <carrier_config operator="Germany-Vodafone">
+        <string-array name="mccmnc" num="2">
+            <item value="26202" />
+            <item value="26209" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+        <boolean name="config_oppo_show_3g_only" value="true" />
+        <int name="fiveg_visible" value="0" />
+        <int name="config_oppo_5g_pref_default" value="1" />
+        <int name="smart5g_status" value="0" />
+        <int name="smart5g_visible" value="0" />
+    </carrier_config>
+    <carrier_config operator="T-Mobile">
+        <string-array name="mccmnc" num="1">
+            <item value="26206" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Spain-Vodafone">
+        <string-array name="mccmnc" num="1">
+            <item value="21401" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+        <boolean name="config_oppo_show_3g_only" value="true" />
+        <int name="fiveg_visible" value="0" />
+        <int name="config_oppo_5g_pref_default" value="1" />
+        <int name="smart5g_status" value="0" />
+        <int name="smart5g_visible" value="0" />
+    </carrier_config>
+    <carrier_config operator="Italy-Vodafone">
+        <string-array name="mccmnc" num="1">
+            <item value="22210" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+        <int name="fiveg_visible" value="0" />
+        <int name="config_oppo_5g_pref_default" value="1" />
+        <int name="smart5g_status" value="0" />
+        <int name="smart5g_visible" value="0" />
+    </carrier_config>
+    <carrier_config operator="PT-Vodafone">
+        <string-array name="mccmnc" num="1">
+            <item value="26801" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <boolean name="config_oppo_show_5g_pref" value="true" />
+        <int name="fiveg_visible" value="0" />
+        <int name="config_oppo_5g_pref_default" value="1" />
+        <int name="smart5g_status" value="0" />
+        <int name="smart5g_visible" value="0" />
+    </carrier_config>
+    <carrier_config operator="NZ-2-Degree">
+        <string-array name="mccmnc" num="1">
+            <item value="53024" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Germany-O2">
+        <string-array name="mccmnc" num="3">
+            <item value="26203" />
+            <item value="26207" />
+            <item value="26208" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Spain-Movistar">
+        <string-array name="mccmnc" num="2">
+            <item value="21405" />
+            <item value="21407" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="UK-O2">
+        <string-array name="mccmnc" num="1">
+            <item value="23410" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="1" />
+    </carrier_config>
+    <carrier_config operator="Poland-PLAY">
+        <string-array name="mccmnc" num="3">
+            <item value="26006" />
+            <item value="26003" />
+            <item value="26005" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Romania-Orange">
+        <string-array name="mccmnc" num="1">
+            <item value="22610" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Slovakia-Orange">
+        <string-array name="mccmnc" num="1">
+            <item value="23105" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Belgium-Orange">
+        <string-array name="mccmnc" num="1">
+            <item value="20610" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Mexico-Telcel">
+        <string-array name="mccmnc" num="1">
+            <item value="334020" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+        <string name="default_vm_number_string">*86</string>
+        <boolean name="voicemail_notification_persistent_bool" value="true" />
+    </carrier_config>
+    <carrier_config operator="3HK">
+        <string-array name="mccmnc" num="1">
+            <item value="45403" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="CMHK">
+        <string-array name="mccmnc" num="2">
+            <item value="45412" />
+            <item value="45413" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="HKT">
+        <string-array name="mccmnc" num="5">
+            <item value="45400" />
+            <item value="45416" />
+            <item value="45419" />
+            <item value="45420" />
+            <item value="45429" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="SMARTONE">
+        <string-array name="mccmnc" num="1">
+            <item value="45406" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="MTS">
+        <string-array name="mccmnc" num="1">
+            <item value="25001" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="RU Megafon">
+        <string-array name="mccmnc" num="1">
+            <item value="25002" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="SPARK">
+        <string-array name="mccmnc" num="1">
+            <item value="53005" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+    </carrier_config>
+    <carrier_config operator="NZ-Vodafone">
+        <string-array name="mccmnc" num="1">
+            <item value="53001" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+    </carrier_config>
+    <carrier_config operator="Viettel">
+        <string-array name="mccmnc" num="1">
+            <item value="45204" />
+        </string-array>
+        <int name="volte_status" value="0" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="0" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Vietnamobile">
+        <string-array name="mccmnc" num="1">
+            <item value="45205" />
+        </string-array>
+        <int name="volte_status" value="0" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Globe">
+        <string-array name="mccmnc" num="1">
+            <item value="51502" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Smart">
+        <string-array name="mccmnc" num="1">
+            <item value="51503" />
+        </string-array>
+        <int name="volte_status" value="0" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="CELCOM">
+        <string-array name="mccmnc" num="1">
+            <item value="50219" />
+        </string-array>
+        <int name="volte_status" value="0" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="SAFARICOM">
+        <string-array name="mccmnc" num="1">
+            <item value="63902" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="0" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Smart">
+        <string-array name="mccmnc" num="1">
+            <item value="51503" />
+        </string-array>
+        <int name="volte_status" value="0" />
+        <int name="volte_visible" value="1" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Globe">
+        <string-array name="mccmnc" num="1">
+            <item value="51502" />
+        </string-array>
+        <int name="volte_status" value="0" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="0" />
+        <int name="vowifi_visible" value="0" />
+        <int name="vowifi_preferred_mode" value="2" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+    <carrier_config operator="Telekom">
+        <string-array name="mccmnc" num="1">
+            <item value="29341" />
+        </string-array>
+        <int name="volte_status" value="1" />
+        <int name="volte_visible" value="0" />
+        <int name="vowifi_status" value="1" />
+        <int name="vowifi_visible" value="1" />
+        <int name="vowifi_preferred_mode" value="1" />
+        <int name="vowifi_roaming_preferred_mode" value="2" />
+    </carrier_config>
+</carrier_config_list>

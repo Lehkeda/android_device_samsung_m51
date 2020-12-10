@@ -1,0 +1,8 @@
+[
+  {
+    "remote"     : "github",
+    "repository" : "LehKeda/vendor_samsung_m51",
+    "target_path": "vendor/samsung/m51",
+    "branch"     : "ten"
+  }
+]
