@@ -60,18 +60,19 @@ PRODUCT_PACKAGES += \
 # Init
 PRODUCT_PACKAGES += \
 	fstab.qcom \
-	init.m51.rc \
-	init.m51nsxx.rc \
-	init.msm.usb.configfs.rc \
-	init.qcom.factory.rc \
-	init.qcom.rc \
-	init.qcom.usb.rc \
-	init.samsung.bsp.rc \
-	init.samsung.rc \
-	init.target.rc \
 	recovery.fstab \
 	init.recovery.qcom.rc 
-    
+ 
+#	init.m51.rc \
+#	init.m51nsxx.rc \
+#	init.msm.usb.configfs.rc \
+#	init.qcom.factory.rc \
+#	init.qcom.rc \
+#	init.qcom.usb.rc \
+#	init.samsung.bsp.rc \
+#	init.samsung.rc \
+#	init.target.rc \
+   
 
 
 # Keylayouts
