@@ -266,7 +266,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	fstab.qcom \
 	recovery.fstab \
-	init.recovery.qcom.rc 
+	init.recovery.qcom.rc \
 	init.m51.rc \
 	init.m51nsxx.rc \
 	init.msm.usb.configfs.rc \
@@ -323,6 +323,3 @@ PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 PRODUCT_PACKAGES += \
     charger_res_images \
     product_charger_res_images
-	
-# Inherit from sm6150-common
-$(call inherit-product, device/samsung/sm6150-common/sm6150.mk)	
