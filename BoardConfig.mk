@@ -20,6 +20,7 @@ DEVICE_PATH := device/samsung/m51
 TARGET_OTA_ASSERT_DEVICE := SM-M515F,SM-M515F/DSN,m51
 
 BOARD_VENDOR := samsung
+TARGET_BOARD_PLATFORM_GPU := qcom-adreno618
 
 # Architecture
 TARGET_ARCH := arm64
@@ -34,12 +35,14 @@ TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
-TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a9
+TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a76
+
+TARGET_USES_64_BIT_BINDER := true
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := sm6150
 TARGET_NO_BOOTLOADER := true
-TARGET_BOARD_PLATFORM := sm7150
+TARGET_BOARD_PLATFORM := sm6150
 
 # Kernel
 BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=1 androidboot.usbcontroller=a600000.dwc3 firmware_class.path=/vendor/firmware_mnt/image nokaslr printk.devkmsg=on androidboot.selinux=permissive
@@ -63,7 +66,7 @@ BOARD_PREBUILT_DTBIMAGE_DIR := $(DEVICE_PATH)/prebuilt/dtb
 TARGET_KERNEL_SOURCE := kernel/samsung/m51
 TARGET_KERNEL_CONFIG := m51_defconfig
 TARGET_KERNEL_CLANG_COMPILE := true
-TARGET_KERNEL_CLANG_PATH := /home/mohaaserver1/data/llvm8/toolchains/llvm-Snapdragon_LLVM_for_Android_8.0/prebuilt/linux-x86_64
+TARGET_KERNEL_CLANG_PATH := /home/hesham/data/llvm8/toolchains/llvm-Snapdragon_LLVM_for_Android_8.0/prebuilt/linux-x86_64
 TARGET_KERNEL_CLANG_VERSION := 8
 #KERNEL_CLANG_TRIPLE := aarch64-linux-gnu-
 
@@ -90,18 +93,37 @@ BOARD_RECOVERYIMAGE_PARTITION_SIZE := 82726912
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 19327352832
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
-#BUILD_WITHOUT_VENDOR := true
-BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE := 2147483648
+BUILD_WITHOUT_VENDOR := true
+TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
+#BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE := 2147483648
 TARGET_USERIMAGES_USE_F2FS := true
 TARGET_COPY_OUT_PRODUCT := system/product
-TARGET_COPY_OUT_VENDOR := system/vendor
+TARGET_COPY_OUT_VENDOR := vendor
+TARGET_COPY_OUT_ODM := odm
 
-# Partitions (Dynamic)
-BOARD_MAIN_SIZE := 8048869376
-BOARD_MAIN_PARTITION_LIST := system
-BOARD_SUPER_PARTITION_GROUPS := main
-BOARD_SUPER_PARTITION_ERROR_LIMIT := 8053063680
+BOARD_ROOT_EXTRA_FOLDERS := \
+    prism \
+    optics \
+    metadata \
+    efs \
+    carrier \
+    dqmdbg \
+    spu \
+    keydata \
+    keyrefuge
+
+#Partitions (Dynamic)
+BOARD_SUPER_METADATA_DEVICE := super
 BOARD_SUPER_PARTITION_SIZE := 8053063680
+BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
+BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 8048869376
+BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system
+
+#BOARD_MAIN_SIZE := 8048869376
+#BOARD_MAIN_PARTITION_LIST := system
+#BOARD_SUPER_PARTITION_GROUPS := main
+#BOARD_SUPER_PARTITION_ERROR_LIMIT := 8053063680
+#BOARD_SUPER_PARTITION_SIZE := 8053063680
 
 # Recovery
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
@@ -125,6 +147,7 @@ BOARD_SUPPRESS_SECURE_ERASE := true
 
 # Android Verified Boot
 BOARD_AVB_ENABLE := true
+BOARD_AVB_ROLLBACK_INDEX := 0
 BOARD_AVB_VBMETA_ARGS=--padding_size 4096
 BOARD_AVB_VBMETA_KEY_PATH=external/avb/test/data/testkey_rsa4096.pem
 BOARD_AVB_VBMETA_SYSTEM := system
@@ -134,7 +157,7 @@ BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
 BOARD_AVB_VBMETA_SYSTEM_ARGS=--padding_size 4096 --rollback_index 1604188800
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
 BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
@@ -142,9 +165,12 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 BOARD_AVB_RECOVERY_ADD_HASH_FOOTER_ARGS=--rollback_index 1
 BOARD_AVB_PRODUCT_SERVICES_HASHTREE_ENABLE=true
 
+# APEX
+DEXPREOPT_GENERATE_APEX_IMAGE := true
+
 # HIDL
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
-DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
+#DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
 
 # Treble
 BOARD_VNDK_VERSION := current
@@ -232,6 +258,8 @@ TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)
 TARGET_USES_PREBUILT_VENDOR_SEPOLICY := true
 TARGET_HAS_FUSEBLK_SEPOLICY_ON_VENDOR := true
 BOARD_PLAT_PRIVATE_SEPOLICY_DIR := $(DEVICE_PATH)/sepolicy/private
+BOARD_SEPOLICY_DIRS := $(DEVICE_PATH)/sepolicy/vendor
+
 # We have to skip checkpolicy because we have to re-define rild
 # in device system sepolicy to work around IMS issues.
 SELINUX_IGNORE_NEVERALLOWS := true
@@ -240,3 +268,9 @@ TARGET_FACE_UNLOCK_SUPPORTED := true
 
 # Inherit from the proprietary version
 #-include vendor/samsung/m51/BoardConfigVendor.mk
+
+# KeyMaster
+#TARGET_PROVIDES_KEYMASTER := false
+
+# Use Snapdragon LLVM, if available
+TARGET_USE_SDCLANG := true

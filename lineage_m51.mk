@@ -16,19 +16,23 @@
 
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
-$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/embedded.mk)
+#$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/embedded.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Inherit from m51 device makefile
 $(call inherit-product, device/samsung/m51/device.mk)
 
+# Inherit some common Lineage stuff.
+$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+
 # Inherit RR stuff
-$(call inherit-product, vendor/rr/config/common_full_phone.mk)
-$(call inherit-product, vendor/rr/config/data_only.mk)
+#$(call inherit-product, vendor/rr/config/common_full_phone.mk)
+#$(call inherit-product, vendor/rr/config/data_only.mk)
 
 # RR Wallpapers
-BUILD_RR_WALLPAPERS := true
+#BUILD_RR_WALLPAPERS := true
 
 # RR build type
 #RR_BUILDTYPE := Official
@@ -36,7 +40,7 @@ BUILD_RR_WALLPAPERS := true
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/samsung/m51/recovery/root,recovery/root)
 
 # Device identifier. This must come after all inclusions.
-PRODUCT_NAME := rr_m51
+PRODUCT_NAME := lineage_m51
 PRODUCT_DEVICE := m51
 PRODUCT_BRAND := Samsung
 PRODUCT_MODEL := SM-M515F
