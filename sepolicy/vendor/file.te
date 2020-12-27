@@ -1,0 +1,20 @@
+type carrier_file, fs_type;
+allow carrier_file labeledfs:filesystem associate;
+
+type dqmdbgblk_file, fs_type;
+allow dqmdbgblk_file labeledfs:filesystem associate;
+
+type keydata_data_file, fs_type;
+allow keydata_data_file labeledfs:filesystem associate;
+
+type keyrefuge_data_file, fs_type;
+allow keyrefuge_data_file labeledfs:filesystem associate;
+
+type spu_file, fs_type;
+allow spu_file labeledfs:filesystem associate;
+
+type sec_poc_file, file_type, mlstrustedobject;
+type fp_sensor_device, dev_type;
+type biometrics_vendor_data_file, data_file_type, file_type;
+type firmware_file, file_type,contextmount_type,vendor_file_type;
+type sec_efs_file, file_type, mlstrustedsubject;

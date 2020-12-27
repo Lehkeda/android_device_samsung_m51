@@ -15,9 +15,6 @@
 #
 
 DEVICE_PATH := device/samsung/m51
-# Inherit from those products. Most specific first.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
@@ -58,35 +55,23 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.fingerprint.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.hardware.fingerprint.xml
 
-
 # fastbootd
 PRODUCT_PACKAGES += \
     fastbootd
 
-# HIDL
+# Init Resources
 PRODUCT_PACKAGES += \
-    android.hidl.base@1.0_system \
-    android.hidl.manager@1.0_system
+    init.qcom.rc \
+    fstab.qcom
 
-  
-# Init
-#PRODUCT_PACKAGES += \
-#	fstab.qcom \
-#	recovery.fstab \
-#	init.recovery.qcom.rc 
+# Recovery
+PRODUCT_PACKAGES += \
+    init.recovery.qcom.rc \
+    fastbootd
 
-#	init.m51.rc \
-#	init.m51nsxx.rc \
-#	init.msm.usb.configfs.rc \
-#	init.qcom.factory.rc \
-#	init.qcom.rc \
-#	init.qcom.usb.rc \
-#	init.samsung.bsp.rc \
-#	init.samsung.rc \
-#	init.target.rc \
-
+# Skip Mount
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/rootdir/etc/fstab.qcom:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
+    $(COMMON_PATH)/skip_mount.cfg:system/etc/init/config/skip_mount.cfg
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
@@ -95,13 +80,16 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/keylayout/gpio-keys.kl:$(TARGET_COPY_OUT_SYSTEM)/usr/keylayout/gpio-keys.kl 
 
 # Overlays
-DEVICE_PACKAGE_OVERLAYS += \
+PRODUCT_PACKAGE_OVERLAYS += \
     $(DEVICE_PATH)/overlay
 
-# Sensor
+# Sensors
 PRODUCT_PACKAGES += \
-    android.hardware.sensors@1.0-impl \
-    android.hardware.sensors@1.0-service
+    android.hardware.sensors@1.0-impl.samsung-sm6150
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
+    frameworks/native/data/etc/android.hardware.sensor.hifi_sensors.xml:system/etc/permissions/android.hardware.sensor.hifi_sensors.xml
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
@@ -122,9 +110,26 @@ PRODUCT_PACKAGES += \
     charger_res_images \
     product_charger_res_images
 
-# Keymaster
-#PRODUCT_PACKAGES += \
-#    android.hardware.keymaster@4.0 \
-#    android.hardware.keymaster@4.0-service \
-#    android.hardware.keymaster@4.0-impl \
-#    libkeymaster4device
+# NFC
+PRODUCT_PACKAGES += \
+    libnfc-nci \
+    libnfc_nci_jni \
+    NfcNci \
+    Tag
+	
+PRODUCT_COPY_FILES += \
+	$(DEVICE_PATH)/configs/libnfc-nci.conf:system/etc/libnfc-nci.conf
+
+# Audio
+PRODUCT_COPY_FILES += \
+	$(DEVICE_PATH)/configs/audio_policy_configuration.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/audio_policy_configuration.xml
+	
+# Skip Mount
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/skip_mount.cfg:system/etc/init/config/skip_mount.cfg
+	
+# GSI AVB Public Keys
+PRODUCT_PACKAGES += \
+    q-gsi.avbpubkey \
+    r-gsi.avbpubkey \
+    s-gsi.avbpubkey

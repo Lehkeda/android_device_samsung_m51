@@ -252,17 +252,30 @@ WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # Releasetools
-TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)
+TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)/releasetools
 
-# Sepolicy
-TARGET_USES_PREBUILT_VENDOR_SEPOLICY := true
-TARGET_HAS_FUSEBLK_SEPOLICY_ON_VENDOR := true
-BOARD_PLAT_PRIVATE_SEPOLICY_DIR := $(DEVICE_PATH)/sepolicy/private
-BOARD_SEPOLICY_DIRS := $(DEVICE_PATH)/sepolicy/vendor
+# SELinux
+BOARD_PLAT_PUBLIC_SEPOLICY_DIR += \
+    device/qcom/sepolicy/generic/public \
+    device/qcom/sepolicy/qva/public \
+    device/samsung_slsi/sepolicy/common/public \
+    $(DEVICE_PATH)/sepolicy/platform/public
 
-# We have to skip checkpolicy because we have to re-define rild
-# in device system sepolicy to work around IMS issues.
-SELINUX_IGNORE_NEVERALLOWS := true
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR += \
+    device/qcom/sepolicy/generic/private \
+    device/qcom/sepolicy/qva/private \
+    device/samsung_slsi/sepolicy/common/private \
+    $(DEVICE_PATH)/sepolicy/platform/private
+
+PRODUCT_PUBLIC_SEPOLICY_DIRS += \
+    device/qcom/sepolicy/product/public \
+    $(DEVICE_PATH)/sepolicy/public
+
+PRODUCT_PRIVATE_SEPOLICY_DIRS += \
+    device/qcom/sepolicy/product/private
+	$(DEVICE_PATH)/sepolicy/private
+	
+BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
 
 TARGET_FACE_UNLOCK_SUPPORTED := true
 
