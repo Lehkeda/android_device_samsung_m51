@@ -5,7 +5,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := android.hardware.sensors@1.0-impl.r5q
+LOCAL_MODULE := android.hardware.sensors@1.0-impl.m51
 LOCAL_MODULE_TAGS  := optional
 LOCAL_VENDOR_MODULE := true
 

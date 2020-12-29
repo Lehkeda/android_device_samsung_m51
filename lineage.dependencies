@@ -8,7 +8,7 @@
         "target_path": "hardware/samsung"
     },
     {
-        "repository": "android_kernel_samsung_r5q",
-        "target_path": "kernel/samsung/r5q"
+        "repository": "android_kernel_samsung_m51",
+        "target_path": "kernel/samsung/m51"
     }
 ]

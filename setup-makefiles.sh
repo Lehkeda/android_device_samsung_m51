@@ -36,7 +36,7 @@ source "${HELPER}"
 setup_vendor "${DEVICE_COMMON}" "${VENDOR}" "${LINEAGE_ROOT}" true
 
 # Copyright headers and guards
-write_headers "r5q"
+write_headers "m51"
 
 # The standard common blobs
 write_makefiles "${MY_DIR}/proprietary-files.txt" true
