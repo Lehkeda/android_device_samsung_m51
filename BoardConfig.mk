@@ -63,9 +63,9 @@ TARGET_KERNEL_CLANG_VERSION := 8
 BOARD_BOOT_HEADER_VERSION := 2
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom androidboot.memcg=1 
-BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237
-BOARD_KERNEL_CMDLINE += service_locator.enable=1 swiotlb=1 androidboot.usbcontroller=a600000.dwc3
-BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware_mnt/image nokaslr printk.devkmsg=on androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 
+BOARD_KERNEL_CMDLINE += service_locator.enable=1 swiotlb=1 androidboot.usbcontroller=a600000.dwc3 
+BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware_mnt/image nokaslr printk.devkmsg=on androidboot.selinux=permissive 
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_RAMDISK_OFFSET := 0x02000000
@@ -84,18 +84,16 @@ BOARD_DTBOIMG_PARTITION_SIZE := 0x0800000
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 19327352832
 BOARD_CACHEIMAGE_PARTITION_SIZE := 419430400
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
+#BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
 
 BOARD_SUPER_PARTITION_SIZE := 8053063680 
 BOARD_SUPER_PARTITION_GROUPS := samsung_dynamic_partitions 
 BOARD_SAMSUNG_DYNAMIC_PARTITIONS_SIZE := 8048869376
-BOARD_SAMSUNG_DYNAMIC_PARTITIONS_PARTITION_LIST := \
-    system \
-    product
+BOARD_SAMSUNG_DYNAMIC_PARTITIONS_PARTITION_LIST := system
 
-TARGET_COPY_OUT_ODM := odm
-TARGET_COPY_OUT_VENDOR := vendor
+#TARGET_COPY_OUT_ODM := odm
+TARGET_COPY_OUT_VENDOR := system/vendor
 TARGET_COPY_OUT_PRODUCT := product
 BUILD_WITHOUT_VENDOR := true 
 
