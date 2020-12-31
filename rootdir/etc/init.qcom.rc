@@ -1,1214 +1,1023 @@
-# Copyright (c) 2009-2012, 2014-2019, The Linux Foundation. All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#     * Redistributions of source code must retain the above copyright
-#       notice, this list of conditions and the following disclaimer.
-#     * Redistributions in binary form must reproduce the above copyright
-#       notice, this list of conditions and the following disclaimer in the
-#       documentation and/or other materials provided with the distribution.
-#     * Neither the name of The Linux Foundation nor
-#       the names of its contributors may be used to endorse or promote
-#       products derived from this software without specific prior written
-#       permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
+on post-fs-data
+    # NFC: create /efs/sec_efs/nfc and /efs/nfc for nv storage
+    mkdir /efs/sec_efs/nfc 0700 nfc nfc
+    mkdir /efs/nfc 0700 nfc nfc
 
-import /vendor/etc/init/hw/init.qcom.usb.rc
-import /vendor/etc/init/hw/init.msm.usb.configfs.rc
-import /vendor/etc/init/hw/init.qcom.test.rc
-import /vendor/etc/init/hw/init.target.rc
-import /vendor/etc/init/hw/init.qcom.factory.rc
+    # NFC KEY
+    mkdir /data/vendor/nfc 0770 nfc nfc
+    mkdir /data/nfc_log 0750 nfc system
+    copy /system/etc/nfc_key /data/nfc/Key
+    chmod 660 /data/nfc/Key
+    chown nfc nfc /data/nfc/Key
 
-on early-init
-    mount debugfs debugfs /sys/kernel/debug
-    chmod 0755 /sys/kernel/debug
-
-  # create symlink for vendor mount points
-    symlink /vendor/firmware_mnt /firmware
-    symlink /vendor/bt_firmware /bt_firmware
-    symlink /vendor/dsp /dsp
-
-  # Change ownership of hw_recovery related nodes
-    chown system graphics /sys/kernel/debug/dri/0/debug/dump
-    chown system graphics /sys/kernel/debug/dri/0/debug/recovery_reg
-    chown system graphics /sys/kernel/debug/dri/0/debug/recovery_dbgbus
-    chown system graphics /sys/kernel/debug/dri/0/debug/recovery_vbif_dbgbus
-
-    # Change ownership of sw_sync node
-    chown system graphics /sys/kernel/debug/sync/sw_sync
-    chmod 0666 /sys/kernel/debug/sync/sw_sync
-
-    chown root system /dev/kmsg
-    chmod 0620 /dev/kmsg
-    # Load WIGIG platform driver
-    exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules msm_11ad_proxy
-
-on init
-	# Brightness Permission
-    chown system system /sys/class/backlight/panel0-backlight/brightness
-    chmod 0664 /sys/class/backlight/panel0-backlight/brightness
-    chown system system /sys/class/backlight/panel0-backlight/max_brightness
-
-    chown system system /sys/class/backlight/panel1-backlight/brightness
-    chmod 0664 /sys/class/backlight/panel1-backlight/brightness
-    chown system system /sys/class/backlight/panel1-backlight/max_brightness
-
-    chown system system /sys/class/leds/lcd-backlight/brightness
-    chmod 0664 /sys/class/leds/lcd-backlight/brightness
-
-    # Support legacy paths
-    symlink /sdcard /mnt/sdcard
-    symlink /sdcard /storage/sdcard0
-
-    # Create cgroup mount point for memory
-    mkdir /sys/fs/cgroup/memory/bg 0750 root system
-    write /sys/fs/cgroup/memory/bg/memory.swappiness 140
-    write /sys/fs/cgroup/memory/bg/memory.move_charge_at_immigrate 1
-    chown root system /sys/fs/cgroup/memory/bg/tasks
-    chmod 0660 /sys/fs/cgroup/memory/bg/tasks
-
-on post-fs
-    chmod 0755 /sys/kernel/debug/tracing
+    restorecon --recursive --force /efs
+    restorecon --recursive --force /cpefs
+    restorecon --recursive --force /mnt/vendor/efs
+    restorecon --recursive --force /mnt/vendor/cpefs
+    restorecon --recursive --force /sec_efs
+    restorecon_recursive /carrier
 
 on early-boot
-    # set RLIMIT_MEMLOCK to 64MB
-    setrlimit 8 67108864 67108864
-    # Allow subsystem (modem etc) debugging
-    write /sys/kernel/boot_adsp/boot 1
-    write /sys/kernel/boot_cdsp/boot 1
-    write /sys/devices/virtual/npu/msm_npu/boot 1
-    write /sys/kernel/boot_slpi/boot 1
-    write /sys/devices/virtual/cvp/cvp/boot 1
-    exec u:r:qti_init_shell:s0 -- /vendor/bin/init.qcom.early_boot.sh
-    exec u:r:qti_init_shell:s0 -- /vendor/bin/init.qti.can.sh
-
-    # for backward compatibility
-    chown system system /persist/sensors
-    chown system system /persist/sensors/registry
-    chown system system /persist/sensors/registry/registry
-    chown system system /persist/sensors/registry/registry/sensors_registry
-    chown system system /persist/sensors/sensors_settings
-    chown system system /persist/sensors/registry/config
-    chmod 0664 /persist/sensors/sensors_settings
-
-    chown system system /mnt/vendor/persist/sensors
-    chown system system /mnt/vendor/persist/sensors/sns.reg
-    chown system system /mnt/vendor/persist/sensors/sensors_list.txt
-    chown system system /mnt/vendor/persist/sensors/registry
-    chown system system /mnt/vendor/persist/sensors/registry/registry
-    chown system system /mnt/vendor/persist/sensors/registry/registry/sensors_registry
-    chown system system /mnt/vendor/persist/sensors/sensors_settings
-    chown system system /mnt/vendor/persist/sensors/registry/sns_reg_config
-    chown system system /mnt/vendor/persist/sensors/registry/sns_reg_version
-    chown system system /mnt/vendor/persist/sensors/registry/config
-    chmod 0664 /mnt/vendor/persist/sensors/sensors_settings
-
-    chown system system /mnt/vendor/persist/data/pfm/licenses
-    chmod 0775 /mnt/vendor/persist/data/pfm/licenses
+    mount none /system/lib64/android.hardware.biometrics.fingerprint@2.1.so /vendor/lib64/android.hardware.biometrics.fingerprint@2.1.so bind
 
 on boot
-    #chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
-    #chown bluetooth net_bt /sys/class/rfkill/rfkill0/type
-    #chown bluetooth net_bt /sys/class/rfkill/rfkill0/state
-    #chown bluetooth bluetooth /proc/bluetooth/sleep/proto
-    #chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_lpm
-    #chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_btwrite
-    #chown system system /sys/module/sco/parameters/disable_esco
-    #chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
-    chown system system /sys/module/msm_core/parameters/polling_interval
-    chown system system /sys/module/msm_core/parameters/disabled
-    chown system system /sys/kernel/debug/msm_core/enable
-    chown system system /sys/kernel/debug/msm_core/ptable
-    chown system system /sys/kernel/boot_slpi/ssr
-    chown system system /sys/kernel/boot_adsp/ssr
-    #chown system system /sys/module/radio_iris_transport/parameters/fmsmd_set
-    #chmod 0660 /sys/module/bluetooth_power/parameters/power
-    #chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
-    #chmod 0660 /sys/module/radio_iris_transport/parameters/fmsmd_set
-    #chmod 0660 /sys/class/rfkill/rfkill0/state
-    #chmod 0660 /proc/bluetooth/sleep/proto
-    #chown bluetooth net_bt /dev/ttyHS0
-    #chmod 0660 /sys/module/hci_uart/parameters/ath_lpm
-    #chmod 0660 /sys/module/hci_uart/parameters/ath_btwrite
-    #chmod 0660 /dev/ttyHS0
-    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
-    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
-
-    chmod 0660 /dev/ttyHS2
-    chown bluetooth bluetooth /dev/ttyHS2
-
-    #chown bluetooth net_bt /sys/class/rfkill/rfkill0/device/extldo
-    #chmod 0660 /sys/class/rfkill/rfkill0/device/extldo
-    # for BT MAC address
-    mkdir /mnt/vendor/efs/bluetooth 0770 system bluetooth
-    # if already exist
-    chown system bluetooth /mnt/vendor/efs/bluetooth
-    chown system bluetooth /mnt/vendor/efs/bluetooth/bt_addr
-    chmod 0770 /mnt/vendor/efs/bluetooth
-    chmod 0660 /mnt/vendor/efs/bluetooth/bt_addr
-
-    # permissions for bluetooth.
-    setprop ro.bt.bdaddr_path "/mnt/vendor/efs/bluetooth/bt_addr"
-    chown bluetooth bluetooth ro.bt.bdaddr_path
-    chown bluetooth bluetooth /dev/ttyHS0
-    chmod 0660 /dev/ttyHS0
-    chmod 0660 /sys/class/rfkill/rfkill0/state
-    chown bluetooth bluetooth /proc/bluetooth/sleep/proto
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/device/extldo
-
-    # bluetooth LPM
-    chmod 0660 /proc/bluetooth/sleep/lpm
-    chmod 0220 /proc/bluetooth/sleep/btwrite
-    chmod 0660 /proc/bluetooth/sleep/proto
-    chown bluetooth bluetooth /proc/bluetooth/sleep/lpm
-    chown bluetooth bluetooth /proc/bluetooth/sleep/btwrite
-    chmod 0600 /dev/btlock
-    chown bluetooth bluetooth /dev/btlock
-
-    # Camera motor permission
-    chown system system /sys/class/sec/sliding_motor/enable
-
-    # This location is used by QCRIL to host UNIX domain
-    # socket files used for internal IPC within QCRIL
-    # modules
-    mkdir /dev/socket/qmux_radio 0770 radio radio
-    chmod 2770 /dev/socket/qmux_radio
-    mkdir /dev/socket/qmux_bluetooth 0770 bluetooth bluetooth
-    chmod 2770 /dev/socket/qmux_bluetooth
-
-    mkdir /persist/drm 0770 system system
-    mkdir /mnt/vendor/persist/bluetooth 0770 bluetooth bluetooth
-    mkdir /persist/misc 0770 system system
-    mkdir /persist/alarm 0770 system system
-    mkdir /mnt/vendor/persist/time 0770 system system
-    mkdir /mnt/vendor/persist/secnvm 0770 system system
-    mkdir /mnt/vendor/persist/iar_db 0770 system system
-    mkdir /mnt/vendor/spunvm 0770 system system
-
-    #Create WIGIG socket area
-    mkdir /dev/socket/wigig 0770 wifi wifi
-
-    setprop wifi.interface wlan0
-
-    setprop ro.telephony.call_ring.multiple false
-
-    #enable camera read sensors data
-    setprop persist.camera.gyro.disable 0
-
-    #Remove SUID bit for iproute2 ip tool
-    chmod 0755 /system/bin/ip
-
-
-    chmod 0444 /sys/devices/platform/msm_hsusb/gadget/usb_state
-
-    setprop net.tcp.2g_init_rwnd 10
-
-    # To prevent out of order acknowledgements from making
-    # connection tracking to treat them as not belonging to
-    # the connection they belong to.
-    # Otherwise, a weird issue happens in which some long
-    # connections on high-throughput links get dropped when
-    # an ack packet comes out of order
-    write /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal 1
-
-    # Set the console loglevel to < KERN_INFO
-    # Set the default message loglevel to KERN_INFO
-    write /proc/sys/kernel/printk "6 6 1 7"
-
-    # Allow access for CCID command/response timeout configuration
-    chown system system /sys/module/ccid_bridge/parameters/bulk_msg_timeout
-
-    # bond0 used by FST Manager
-    chown wifi wifi /sys/class/net/bond0/bonding/queue_id
-
-    # Allow access to emmc rawdump block partition and dload sysfs node
-    chown root system /dev/block/bootdevice/by-name/rawdump
-    chmod 0660 /dev/block/bootdevice/by-name/rawdump
-    chown root system /sys/kernel/dload/emmc_dload
-    chmod 0660 /sys/kernel/dload/emmc_dload
-    chown root system /dev/block/bootdevice/by-name/ramdump
-    chmod 0660 /dev/block/bootdevice/by-name/ramdump
-    chown root system /sys/kernel/dload/dload_mode
-    chmod 0660 /sys/kernel/dload/dload_mode
-
-    chown system system /sys/class/backlight/panel0-backlight/brightness
-    chown system system /sys/class/backlight/panel0-backlight/max_brightness
-    chown system system /sys/class/backlight/panel1-backlight/brightness
-    chown system system /sys/class/backlight/panel1-backlight/max_brightness
-
-    # Allow access to sensors device attributes
-    chown system system /sys/class/sensors/MPU6050-accel/enable
-    chown system system /sys/class/sensors/MPU6050-accel/poll_delay
-    chown system system /sys/class/sensors/MPU6050-gyro/enable
-    chown system system /sys/class/sensors/MPU6050-gyro/poll_delay
-    chown system system /sys/class/sensors/apds9930-light/enable
-    chown system system /sys/class/sensors/apds9930-light/poll_delay
-    chown system system /sys/class/sensors/apds9930-proximity/enable
-    chown system system /sys/class/sensors/apds9930-proximity/poll_delay
-
-    # Fingerprint sensor
-    chmod 0660 /dev/esfp0
-    chown system system /dev/esfp0
-
-    chown system radio /sys/class/fingerprint/fingerprint/type_check
-    chown system radio /sys/class/fingerprint/fingerprint/name
-    chown system radio /sys/class/fingerprint/fingerprint/vendor
-    chown system radio /sys/class/fingerprint/fingerprint/adm
-    chown system radio /sys/class/fingerprint/fingerprint/bfs_values
-    chown system radio /sys/class/fingerprint/fingerprint/hbm
-    chown system radio /sys/class/fingerprint/fingerprint/position
-    chown system radio /sys/class/fingerprint/fingerprint/intcnt
-    chown system radio /sys/class/fingerprint/fingerprint/resetcnt
-
-    mkdir /data/vendor/biometrics 0770 system system
-    mkdir /data/vendor/fpSnrTest 0770 system system
-    mkdir /efs/biometrics 0770 system system
-    mkdir /efs/biometrics/meta 0770 system system
-
-    # Create directory used for display
-    # for backward compatibility
-    mkdir /persist/display 0770 system graphics
-    mkdir /mnt/vendor/persist/display 0770 system graphics
-
-    # Create vpp directory
-    mkdir /mnt/vendor/persist/vpp 0770 media media
-
-
-    # Create hvdcp_opti directory
-    mkdir /mnt/vendor/persist/hvdcp_opti 0770 root system
-
-    #sensors log dir
-    #mkdir /data/vendor/sensors
-    #chown system system /data/vendor/sensors
-
-# msm specific files that need to be created on /data
-on post-fs-data
-    mkdir /data/vendor/misc 01771 system system
-
-    # Create directory used for dump collection
-    mkdir /data/vendor/ssrdump 0770 root system
-
-    # Create directory used by display clients
-    mkdir /data/vendor/display 0770 system graphics
-
-    # Change lm related dirs
-    mkdir /data/vendor/lm 0700 root root
-
-    # Create directory used by media clients
-    mkdir /data/vendor/media 0770 mediacodec media
-
-    # Create /data/vendor/tzstorage directory for SFS listener
-    mkdir /data/vendor/tzstorage 0770 system system
-
-    # Create directory for apps access via QTEEConnector
-    mkdir /data/vendor/qtee 0770 system system
-
-    #Create folder of camera
-    mkdir /data/vendor/camera 0770 camera camera
-
-
-    #Create directory for tftp
-    mkdir /data/vendor/tombstones 0771 system system
-    mkdir /data/vendor/tombstones/rfs 0771 system system
-
-    mkdir /data/vendor/ramdump 0771 root system
-    mkdir /data/vendor/bluetooth 0770 bluetooth bluetooth
-    mkdir /data/vendor/ramdump/bluetooth 0770 bluetooth bluetooth
-
-    # Create the directories used by the Wireless subsystem
-    mkdir /data/vendor/wifi 0770 wifi wifi
-    mkdir /data/vendor/wifi/sockets 0770 wifi wifi
-    mkdir /data/vendor/wifi/hostapd 0770 wifi wifi
-    mkdir /data/vendor/wifi/hostapd/ctrl 0770 wifi wifi
-    mkdir /data/vendor/wifi/wpa_supplicant 0770 wifi wifi
-    mkdir /data/vendor/wifi/wigig_hostapd 0770 wifi wifi
-    mkdir /data/vendor/wifi/wpa 0770 wifi wifi
-    mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
-
-    # Create the directories used by WiGig Sensing
-    mkdir /data/vendor/sensing 0770 system wifi
-
-    # Create the directories used by CnE subsystem
-    mkdir /data/vendor/connectivity 0771 radio radio
-    chown radio radio /data/vendor/connectivity
-
-    # Create directory used by audio subsystem
-    mkdir /data/vendor/audio 0770 audio audio
-
-    # Create directory for audio delta files
-    mkdir /data/vendor/audio/acdbdata 0770 media audio
-    mkdir /data/vendor/audio/acdbdata/delta 0770 media audio
-
-    # Create directory for radio
-    mkdir /data/vendor/radio 0770 system radio
-    rm /data/vendor/radio/shmbus
-
-    # Create directory for modem_config
-    mkdir /data/vendor/modem_config 0570 radio root
-
-    # Mounting of persist is moved to 'on emmc-fs' and 'on fs' sections
-    # We chown/chmod /persist again so because mount is run as root + defaults
-    chown root system /persist
-    chmod 0771 /persist
-    chown system system /persist/WCNSS_qcom_wlan_nv.bin
-    chmod 0664 /sys/devices/platform/msm_sdcc.1/polling
-    chmod 0664 /sys/devices/platform/msm_sdcc.2/polling
-    chmod 0664 /sys/devices/platform/msm_sdcc.3/polling
-    chmod 0664 /sys/devices/platform/msm_sdcc.4/polling
-
-    # Chown polling nodes as needed from UI running on system server
-    chown system system /sys/devices/platform/msm_sdcc.1/polling
-    chown system system /sys/devices/platform/msm_sdcc.2/polling
-    chown system system /sys/devices/platform/msm_sdcc.3/polling
-    chown system system /sys/devices/platform/msm_sdcc.4/polling
-
-    #Create the symlink to qcn wpa_supplicant folder for ar6000 wpa_supplicant
-    mkdir /data/system 0775 system system
-    #symlink /data/misc/wifi/wpa_supplicant /data/system/wpa_supplicant
-
-    #Create directories for Location services
-    mkdir /data/vendor/location 0770 gps gps
-    mkdir /data/vendor/location/mq 0770 gps gps
-    mkdir /data/vendor/location/xtwifi 0770 gps gps
-    mkdir /dev/socket/location 0770 gps gps
-    mkdir /dev/socket/location/mq 0770 gps gps
-    mkdir /dev/socket/location/xtra 0770 gps gps
-
-    #Create directories for wifihal services
-    mkdir /dev/socket/wifihal 0770 wifi wifi
-    chmod 2770 /dev/socket/wifihal
-
-    #Create directory for FOTA
-    mkdir /data/fota 0771
-    chown system system /data/fota
-
-    #Create directory for hostapd
-    mkdir /data/hostapd 0770 system wifi
-
-    # Create /data/time folder for time-services
-    mkdir /data/vendor/time/ 0700 system system
-
-    setprop vold.post_fs_data_done 1
-
-    #Create a folder for SRS to be able to create a usercfg file
-    #mkdir /data/data/media 0770 media media
-
-    #Create FM dir for patchdownloader
-    mkdir /data/vendor/fm 0770 system system
-    chmod 0770 /data/vendor/fm
-
-    #Create PERFD deamon related dirs
-    mkdir /data/vendor/perfd 0770 root system
-    chmod 2770 /data/vendor/perfd
-    rm /data/vendor/perfd/default_values
-
-    mkdir /data/vendor/secure_element 0777 system system
-
-    #Create IOP  deamon related dirs
-    mkdir /data/vendor/iop 0700 root system
-
-    # Mark the copy complete flag to not completed
-    write /data/vendor/radio/copy_complete 0
-    chown radio radio /data/vendor/radio/copy_complete
-    chmod 0660 /data/vendor/radio/copy_complete
-
-    # copy prebuilt qcril.db files always
-    copy /vendor/radio/qcril_database/qcril.db /data/vendor/radio/qcril_prebuilt.db
-    chown radio radio /data/vendor/radio/qcril_prebuilt.db
-    chmod 0660 /data/vendor/radio/qcril_prebuilt.db
-    # File flags for prebuilt ril db file
-    write /data/vendor/radio/prebuilt_db_support 1
-    chown radio radio /data/vendor/radio/prebuilt_db_support
-    chmod 0400 /data/vendor/radio/prebuilt_db_support
-    write /data/vendor/radio/db_check_done 0
-    chown radio radio /data/vendor/radio/db_check_done
-    chmod 0660 /data/vendor/radio/db_check_done
-
-    # qti-logkit data
-    mkdir /data/vendor/qti-logkit/ 0771 system system
-    mkdir /data/vendor/qti-logkit/shared-privileged/ 2770 system system
-    mkdir /data/vendor/qti-logkit/shared-public/ 2770 system diag
-    mkdir /data/vendor/qti-logkit/socket-privileged/ 2770 system system
-    mkdir /data/vendor/qti-logkit/socket-public/ 2750 system diag
-    mkdir /data/vendor/qti-logkit/logdata/ 2750 system shell
-
-    #Create SWAP related dirs
-    mkdir /data/vendor/swap 0770 root system
-    chmod 2770 /data/vendor/swap
-
-    # set aggressive read ahead for dm-0 and dm-1 during boot up
-    write /sys/block/dm-0/queue/read_ahead_kb 2048
-    write /sys/block/dm-1/queue/read_ahead_kb 2048
-    write /sys/block/dm-2/queue/read_ahead_kb 2048
-
-    # Create vpp directory
-    mkdir /data/vendor/vpp 0770 media media
-
-    #Create dir for TUI
-    mkdir /data/vendor/tui 0700 system drmrpc
-
-    #FINGERPRINT
-    mkdir /data/vendor/biometrics 0770 system system
-    mkdir /data/vendor/fpSnrTest 0770 system system
-    
-    #Start move time data to /data/vendor once post-fs-data done
-    start vendor.move_time_data
-
-service nqnfcinfo /system/vendor/bin/nqnfcinfo
-    class late_start
-    group nfc
-    user system
-    oneshot
-
-service iop /system/vendor/bin/iop
-    class main
-    user root
-    group root
-    disabled
-    socket iop seqpacket 0666 root system
-
-service qcomsysd /system/vendor/bin/qcom-system-daemon
-    class main
-    user root
-    group root diag oem_2901
-    disabled
-
-on property:persist.vendor.qcomsysd.enabled=1
-    enable qcomsysd
-
-on property:persist.vendor.qcomsysd.enabled=0
-    stop qcomsysd
-
-service vendor.ssr_setup /system/vendor/bin/ssr_setup
-    oneshot
-    disabled
-
-service vendor.ss_ramdump /system/vendor/bin/subsystem_ramdump
-    class main
-    user system
-    group system
-    disabled
-
-on property:ro.vendor.iocgrp.config=1
-    mkdir /dev/blkio
-    mount cgroup none /dev/blkio blkio
-    chown system system /dev/blkio
-    chown system system /dev/blkio/tasks
-    chmod 0664 /dev/blkio/tasks
-    mkdir /dev/blkio/bg 0755 system system
-    chown system system /dev/blkio/bg/tasks
-    chmod 0664 /dev/blkio/bg/tasks
-    write /dev/blkio/blkio.weight 1000
-    write /dev/blkio/bg/blkio.weight 100
-
-on property:persist.sys.ssr.enable_debug=*
-    write /sys/module/subsystem_restart/parameters/enable_debug ${persist.sys.ssr.enable_debug}
-
-on property:persist.sys.mba_boot_timeout=*
-    write /sys/module/pil_msa/parameters/pbl_mba_boot_timeout_ms ${persist.sys.mba_boot_timeout}
-
-on property:persist.sys.modem_auth_timeout=*
-    write /sys/module/pil_msa/parameters/modem_auth_timeout_ms ${persist.sys.modem_auth_timeout}
-
-on property:persist.sys.pil_proxy_timeout=*
-    write /sys/module/peripheral_loader/parameters/proxy_timeout_ms ${persist.sys.pil_proxy_timeout}
-
-on property:persist.vendor.ssr.restart_level=*
-    start vendor.ssr_setup
-
-on property:persist.vendor.ssr.enable_ramdumps=1
-    write /sys/module/subsystem_restart/parameters/enable_ramdumps 1
-    mkdir /data/vendor/ramdump_ssr 770 system system
-    start vendor.ss_ramdump
-
-on property:persist.vendor.ssr.enable_ramdumps=0
-    write /sys/module/subsystem_restart/parameters/enable_ramdumps 0
-
-on property:persist.vendor.sys.rawdump_copy=1
-    write /sys/kernel/dload/emmc_dload 1
-
-on property:persist.vendor.sys.rawdump_copy=0
-    write /sys/kernel/dload/emmc_dload 0
-
+    write /sys/fs/f2fs/${dev.mnt.blk.data}/gc_urgent_sleep_time 500
+
+    # Permissions for booster
+    chown system root /sys/class/kgsl/kgsl-3d0/min_pwrlevel
+    chown system root /sys/class/kgsl/kgsl-3d0/max_pwrlevel
+    chown system root /sys/class/kgsl/kgsl-3d0/gpu_available_frequencies
+    chmod 0664 /sys/class/kgsl/kgsl-3d0/min_pwrlevel
+    chmod 0664 /sys/class/kgsl/kgsl-3d0/max_pwrlevel
+    chmod 0664 /sys/class/kgsl/kgsl-3d0/gpu_available_frequencies
+
+    # Permissions for GPU
+    chown system system /sys/kernel/gpu/gpu_max_clock
+    chown system system /sys/kernel/gpu/gpu_min_clock
+    chown system system /sys/kernel/gpu/gpu_governor  
+    chmod 0644 /sys/kernel/gpu/gpu_max_clock
+    chmod 0644 /sys/kernel/gpu/gpu_min_clock
+    chmod 0644 /sys/kernel/gpu/gpu_governor
+    chmod 0444 /sys/kernel/gpu/gpu_available_governor
+    chmod 0444 /sys/kernel/gpu/gpu_busy
+    chmod 0444 /sys/kernel/gpu/gpu_clock
+    chmod 0444 /sys/kernel/gpu/gpu_freq_table
+    chmod 0444 /sys/kernel/gpu/gpu_info
+    chmod 0444 /sys/kernel/gpu/gpu_model
+    chmod 0444 /sys/kernel/gpu/gpu_tmu
+
+    # Permissions for input_booster
+    chown system radio /sys/class/input_booster/level
+    chown system radio /sys/class/input_booster/head
+    chown system radio /sys/class/input_booster/tail
+    chown system radio /sys/class/input_booster/touchkey/level
+    chown system radio /sys/class/input_booster/touchkey/freq
+    chown system radio /sys/class/input_booster/touchkey/time
+    chmod 0664 /sys/class/input_booster/level
+    chmod 0664 /sys/class/input_booster/head
+    chmod 0664 /sys/class/input_booster/tail
+    chmod 0664 /sys/class/input_booster/touchkey/level
+    chmod 0664 /sys/class/input_booster/touchkey/freq
+    chmod 0664 /sys/class/input_booster/touchkey/time
+
+# MTP device permission
+    chmod 0660 /dev/usb_mtp_gadget
+    chown system mtp /dev/usb_mtp_gadget
+    mkdir /dev/socket/mtp 0770 system mtp
+
+# Accelerometer Sensor
+    chown system radio /sys/class/sensors/accelerometer_sensor/name
+    chown system radio /sys/class/sensors/accelerometer_sensor/vendor
+    chown system radio /sys/class/sensors/accelerometer_sensor/raw_data
+    chown system radio /sys/class/sensors/accelerometer_sensor/calibration
+    chown system radio /sys/class/sensors/accelerometer_sensor/selftest
+    chown system radio /sys/class/sensors/accelerometer_sensor/reactive_alert
+    chown system radio /sys/class/sensors/accelerometer_sensor/lowpassfilter
+    chown system system /sys/class/sensors/accelerometer_sensor/dhr_sensor_info
+
+# Gyro Sensor
+    chown system radio /sys/class/sensors/gyro_sensor/name
+    chown system radio /sys/class/sensors/gyro_sensor/vendor
+    chown system radio /sys/class/sensors/gyro_sensor/selftest_revised
+    chown system radio /sys/class/sensors/gyro_sensor/power_on
+    chown system radio /sys/class/sensors/gyro_sensor/power_off
+    chown system radio /sys/class/sensors/gyro_sensor/selftest
+    chown system media /sys/class/sensors/gyro_sensor/temperature
+
+# Sub Accelerometer Sensor
+    chown system radio /sys/class/sensors/sub_accelerometer_sensor/name
+    chown system radio /sys/class/sensors/sub_accelerometer_sensor/vendor
+    chown system radio /sys/class/sensors/sub_accelerometer_sensor/raw_data
+    chown system radio /sys/class/sensors/sub_accelerometer_sensor/calibration
+    chown system radio /sys/class/sensors/sub_accelerometer_sensor/selftest
+    chown system radio /sys/class/sensors/sub_accelerometer_sensor/reactive_alert
+    chown system radio /sys/class/sensors/sub_accelerometer_sensor/lowpassfilter
+    chown system system /sys/class/sensors/sub_accelerometer_sensor/dhr_sensor_info
+
+# Sub Gyro Sensor
+    chown system radio /sys/class/sensors/sub_gyro_sensor/name
+    chown system radio /sys/class/sensors/sub_gyro_sensor/vendor
+    chown system radio /sys/class/sensors/sub_gyro_sensor/selftest_revised
+    chown system radio /sys/class/sensors/sub_gyro_sensor/power_on
+    chown system radio /sys/class/sensors/sub_gyro_sensor/power_off
+    chown system radio /sys/class/sensors/sub_gyro_sensor/selftest
+    chown system media /sys/class/sensors/sub_gyro_sensor/temperature
+
+# Magnetic Sensor
+    chown system radio /sys/class/sensors/magnetic_sensor/name
+    chown system radio /sys/class/sensors/magnetic_sensor/vendor
+    chown system radio /sys/class/sensors/magnetic_sensor/raw_data
+    chown system radio /sys/class/sensors/magnetic_sensor/adc
+    chown system radio /sys/class/sensors/magnetic_sensor/asa
+    chown system radio /sys/class/sensors/magnetic_sensor/dac
+    chown system radio /sys/class/sensors/magnetic_sensor/chk_registers
+    chown system radio /sys/class/sensors/magnetic_sensor/selftest
+    chown system system /sys/class/sensors/magnetic_sensor/dhr_sensor_info
+
+# Barometer Sensor
+    chown system radio /sys/class/sensors/barometer_sensor/name
+    chown system radio /sys/class/sensors/barometer_sensor/vendor
+    chown system radio /sys/class/sensors/barometer_sensor/sea_level_pressure
+    chown system radio /sys/class/sensors/barometer_sensor/calibration
+    chown system radio /sys/class/sensors/barometer_sensor/eeprom_check
+    chown system radio /sys/class/sensors/barometer_sensor/temperature
+    chown system radio /sys/class/sensors/barometer_sensor/selftest
+    chown system system /sys/class/sensors/barometer_sensor/dhr_sensor_info
+
+# Proximity Sensor
+    chown system radio /sys/class/sensors/proximity_sensor/name
+    chown system radio /sys/class/sensors/proximity_sensor/vendor
+    chown system radio /sys/class/sensors/proximity_sensor/state
+    chown system radio /sys/class/sensors/proximity_sensor/raw_data
+    chown system radio /sys/class/sensors/proximity_sensor/barcode_emul_en
+    chown system radio /sys/class/sensors/proximity_sensor/prox_avg
+    chown system radio /sys/class/sensors/proximity_sensor/prox_cal
+    chown system radio /sys/class/sensors/proximity_sensor/thresh_high
+    chown system radio /sys/class/sensors/proximity_sensor/thresh_low
+    chown system radio /sys/class/sensors/proximity_sensor/prox_offset_pass
+    chown system radio /sys/class/sensors/proximity_sensor/prox_trim
+    chown system radio /sys/class/sensors/proximity_sensor/thresh_detect_high
+    chown system radio /sys/class/sensors/proximity_sensor/thresh_detect_low
+    chown system radio /sys/class/sensors/proximity_sensor/prox_alert_thresh
+    chown system system /sys/class/sensors/proximity_sensor/dhr_sensor_info
+    chown system radio /sys/class/sensors/proximity_sensor/prox_position
+    chown system system /sys/class/sensors/proximity_sensor/prox_wakelock
+
+# Light Sensor
+    chown system radio /sys/class/sensors/light_sensor/name
+    chown system radio /sys/class/sensors/light_sensor/vendor
+    chown system radio /sys/class/sensors/light_sensor/lux
+    chown system radio /sys/class/sensors/light_sensor/raw_data
+    chown system radio /sys/class/sensors/light_sensor/read_copr
+    chown system radio /sys/class/sensors/light_sensor/boled_enable
+    chown system radio /sys/class/sensors/light_sensor/hallic_info
+    chown system radio /sys/class/sensors/light_sensor/lcd_onoff
+    chown system radio /sys/class/sensors/light_sensor/sensorhub_ddi_spi_check
+    chown system radio /sys/class/sensors/light_sensor/light_cal
+
+# Hidden Hole
+    chown system radio /sys/class/sensors/hidden_hole/hh_ver
+    chown system radio /sys/class/sensors/hidden_hole/hh_write_all_data
+    chown system radio /sys/class/sensors/hidden_hole/hh_is_exist_efs
+    chown system radio /sys/class/sensors/hidden_hole/hh_ext_prox_th
+
+# Hidden Hole Sub
+    chown system radio /sys/class/sensors/hidden_hole/hh_sub_ver
+    chown system radio /sys/class/sensors/hidden_hole/hh_sub_write_all_data
+    chown system radio /sys/class/sensors/hidden_hole/hh_sub_is_exist_efs
+    chown system radio /sys/class/sensors/hidden_hole/hh_sub_ext_prox_th
+
+# MirrorLink permission
+    mkdir /dev/socket/mlaudio 0770 audioserver system
+
+# MOBEAM
+    chown system radio /sys/class/sec/sec_barcode_emul/vendor
+    chown system radio /sys/class/sec/sec_barcode_emul/name
+    chown system radio /sys/class/sec/sec_barcode_emul/barcode_send
+    chown system radio /sys/class/sec/sec_barcode_emul/barcode_led_status
+    chown system radio /sys/class/sec/sec_barcode_emul/barcode_ver_check
+
+# Permissions for Grip Sensor
+# SX93xx
+    chown system radio /sys/class/sensors/grip_sensor/name
+    chown system radio /sys/class/sensors/grip_sensor/vendor
+    chown system radio /sys/class/sensors/grip_sensor/raw_data
+    chown system radio /sys/class/sensors/grip_sensor/threshold
+    chown system radio /sys/class/sensors/grip_sensor/calibration
+    chown system radio /sys/class/sensors/grip_sensor/onoff
+    chown system radio /sys/class/sensors/grip_sensor/reset
+    chown system radio /sys/class/sensors/grip_sensor/mode
+    chown system radio /sys/class/sensors/grip_sensor/gain
+    chown system radio /sys/class/sensors/grip_sensor/start
+    chown system radio /sys/class/sensors/grip_sensor/normal_threshold
+    chown system radio /sys/class/sensors/grip_sensor/ch_state
+    chown system radio /sys/class/sensors/grip_sensor/body_threshold
+    chown system radio /sys/class/sensors/grip_sensor/grip_flush
+    chown system radio /sys/class/sensors/grip_sensor/irq_count
+    chown system radio /sys/class/sensors/grip_sensor/resolution
+    chown system radio /sys/class/sensors/grip_sensor/adc_filt
+    chown system radio /sys/class/sensors/grip_sensor/useful_filt
+    chown system radio /sys/class/sensors/grip_sensor/ch_count
+    chown system radio /sys/class/sensors/grip_sensor/gain_ch2
+    chown system radio /sys/class/sensors/grip_sensor/raw_data_ch2
+    chown system radio /sys/class/sensors/grip_sensor/diff_avg_ch2
+    chown system radio /sys/class/sensors/grip_sensor/normal_threshold_ch2
+    chown system radio /sys/class/sensors/grip_sensor/sampling_freq_ch2
+    chown system radio /sys/class/sensors/grip_sensor/ch_count
+    chown system radio /sys/class/sensors/grip_sensor/rawfilt_ch2
+    chown system radio /sys/class/sensors/grip_sensor/irq_count_ch2
+    chown system radio /sys/class/sensors/grip_sensor/mcc
+
+    chown system radio /sys/class/sensors/grip_sensor_sub/name
+    chown system radio /sys/class/sensors/grip_sensor_sub/vendor
+    chown system radio /sys/class/sensors/grip_sensor_sub/raw_data
+    chown system radio /sys/class/sensors/grip_sensor_sub/threshold
+    chown system radio /sys/class/sensors/grip_sensor_sub/calibration
+    chown system radio /sys/class/sensors/grip_sensor_sub/onoff
+    chown system radio /sys/class/sensors/grip_sensor_sub/reset
+    chown system radio /sys/class/sensors/grip_sensor_sub/mode
+    chown system radio /sys/class/sensors/grip_sensor_sub/gain
+    chown system radio /sys/class/sensors/grip_sensor_sub/start
+    chown system radio /sys/class/sensors/grip_sensor_sub/normal_threshold
+    chown system radio /sys/class/sensors/grip_sensor_sub/gain_ch2
+    chown system radio /sys/class/sensors/grip_sensor_sub/raw_data_ch2
+    chown system radio /sys/class/sensors/grip_sensor_sub/diff_avg_ch2
+    chown system radio /sys/class/sensors/grip_sensor_sub/normal_threshold_ch2
+    chown system radio /sys/class/sensors/grip_sensor_sub/ch_state
+    chown system radio /sys/class/sensors/grip_sensor_sub/body_threshold
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_flush
+    chown system radio /sys/class/sensors/grip_sensor_sub/irq_count
+    chown system radio /sys/class/sensors/grip_sensor_sub/ch_count
+    chown system radio /sys/class/sensors/grip_sensor_sub/resolution
+    chown system radio /sys/class/sensors/grip_sensor_sub/adc_filt
+    chown system radio /sys/class/sensors/grip_sensor_sub/useful_filt
+
+    chown system radio /sys/class/sensors/grip_sensor_sub2/name
+    chown system radio /sys/class/sensors/grip_sensor_sub2/vendor
+    chown system radio /sys/class/sensors/grip_sensor_sub2/raw_data
+    chown system radio /sys/class/sensors/grip_sensor_sub2/threshold
+    chown system radio /sys/class/sensors/grip_sensor_sub2/calibration
+    chown system radio /sys/class/sensors/grip_sensor_sub2/onoff
+    chown system radio /sys/class/sensors/grip_sensor_sub2/reset
+    chown system radio /sys/class/sensors/grip_sensor_sub2/mode
+    chown system radio /sys/class/sensors/grip_sensor_sub2/gain
+    chown system radio /sys/class/sensors/grip_sensor_sub2/start
+    chown system radio /sys/class/sensors/grip_sensor_sub2/normal_threshold
+    chown system radio /sys/class/sensors/grip_sensor_sub2/gain_ch2
+    chown system radio /sys/class/sensors/grip_sensor_sub2/raw_data_ch2
+    chown system radio /sys/class/sensors/grip_sensor_sub2/diff_avg_ch2
+    chown system radio /sys/class/sensors/grip_sensor_sub2/normal_threshold_ch2
+    chown system radio /sys/class/sensors/grip_sensor_sub2/ch_state
+    chown system radio /sys/class/sensors/grip_sensor_sub2/body_threshold
+    chown system radio /sys/class/sensors/grip_sensor_sub2/grip_flush
+    chown system radio /sys/class/sensors/grip_sensor_sub2/irq_count
+    chown system radio /sys/class/sensors/grip_sensor_sub2/ch_count
+    chown system radio /sys/class/sensors/grip_sensor_sub2/resolution
+    chown system radio /sys/class/sensors/grip_sensor_sub2/adc_filt
+    chown system radio /sys/class/sensors/grip_sensor_sub2/useful_filt
+
+# Abov
+    chown system radio /sys/class/sensors/grip_sensor/grip_irq_count
+    chown system radio /sys/class/sensors/grip_sensor/grip_threshold
+    chown system radio /sys/class/sensors/grip_sensor/grip_total_cap
+    chown system radio /sys/class/sensors/grip_sensor/grip_sar_enable
+    chown system radio /sys/class/sensors/grip_sensor/grip_sw_reset
+    chown system radio /sys/class/sensors/grip_sensor/grip_earjack
+    chown system radio /sys/class/sensors/grip_sensor/grip
+    chown system radio /sys/class/sensors/grip_sensor/grip_baseline
+    chown system radio /sys/class/sensors/grip_sensor/grip_raw
+    chown system radio /sys/class/sensors/grip_sensor/grip_gain
+    chown system radio /sys/class/sensors/grip_sensor/grip_check
+    chown system radio /sys/class/sensors/grip_sensor/grip_sar_only_mode
+    chown system radio /sys/class/sensors/grip_sensor/grip_sar_press_threshold
+    chown system radio /sys/class/sensors/grip_sensor/grip_sar_release_threshold
+    chown system radio /sys/class/sensors/grip_sensor/grip_firm_version_phone
+    chown system radio /sys/class/sensors/grip_sensor/grip_firm_version_panel
+    chown system radio /sys/class/sensors/grip_sensor/grip_firm_update
+    chown system radio /sys/class/sensors/grip_sensor/grip_firm_update_status
+    chown system radio /sys/class/sensors/grip_sensor/grip_irq_state
+    chown system radio /sys/class/sensors/grip_sensor/grip_irq_en_cnt
+    chown system radio /sys/class/sensors/grip_sensor/grip_reg_rw
+    chown system radio /sys/class/sensors/grip_sensor/grip_crc_check
+    chown system radio /sys/class/sensors/grip_sensor/grip_sw_reset_ready
+
+    chown system radio /sys/class/sensors/grip_sensor/grip_sar_press_threshold_2ch
+    chown system radio /sys/class/sensors/grip_sensor/grip_sar_release_threshold_2ch
+
+    chown system radio /sys/class/sensors/grip_sensor/grip_threshold_2ch
+    chown system radio /sys/class/sensors/grip_sensor/grip_total_cap_2ch
+    chown system radio /sys/class/sensors/grip_sensor/grip_2ch
+    chown system radio /sys/class/sensors/grip_sensor/grip_baseline_2ch
+    chown system radio /sys/class/sensors/grip_sensor/grip_raw_2ch
+    chown system radio /sys/class/sensors/grip_sensor/grip_check_2ch
+
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_irq_count
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_threshold
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_total_cap
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_sar_enable
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_sw_reset
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_earjack
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_baseline
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_raw
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_gain
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_check
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_sar_only_mode
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_sar_press_threshold
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_sar_release_threshold
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_firm_version_phone
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_firm_version_panel
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_firm_update
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_firm_update_status
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_irq_state
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_irq_en_cnt
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_reg_rw
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_crc_check
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_sw_reset_ready
+
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_sar_press_threshold_2ch
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_sar_release_threshold_2ch
+
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_threshold_2ch
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_total_cap_2ch
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_2ch
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_baseline_2ch
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_raw_2ch
+    chown system radio /sys/class/sensors/grip_sensor_sub/grip_check_2ch
+# WIFI Grip sensor
+    chown system radio /sys/class/sensors/grip_sensor_wifi/name
+    chown system radio /sys/class/sensors/grip_sensor_wifi/vendor
+    chown system radio /sys/class/sensors/grip_sensor_wifi/raw_data
+    chown system radio /sys/class/sensors/grip_sensor_wifi/threshold
+    chown system radio /sys/class/sensors/grip_sensor_wifi/calibration
+    chown system radio /sys/class/sensors/grip_sensor_wifi/onoff
+    chown system radio /sys/class/sensors/grip_sensor_wifi/reset
+    chown system radio /sys/class/sensors/grip_sensor_wifi/mode
+    chown system radio /sys/class/sensors/grip_sensor_wifi/gain
+    chown system radio /sys/class/sensors/grip_sensor_wifi/start
+    chown system radio /sys/class/sensors/grip_sensor_wifi/normal_threshold
+    chown system radio /sys/class/sensors/grip_sensor_wifi/gain_ch2
+    chown system radio /sys/class/sensors/grip_sensor_wifi/raw_data_ch2
+    chown system radio /sys/class/sensors/grip_sensor_wifi/diff_avg_ch2
+    chown system radio /sys/class/sensors/grip_sensor_wifi/normal_threshold_ch2
+    chown system radio /sys/class/sensors/grip_sensor_wifi/ch_state
+    chown system radio /sys/class/sensors/grip_sensor_wifi/body_threshold
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_flush
+    chown system radio /sys/class/sensors/grip_sensor_wifi/irq_count
+    chown system radio /sys/class/sensors/grip_sensor_wifi/ch_count
+    chown system radio /sys/class/sensors/grip_sensor_wifi/resolution
+    chown system radio /sys/class/sensors/grip_sensor_wifi/adc_filt
+    chown system radio /sys/class/sensors/grip_sensor_wifi/useful_filt
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_irq_count
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_threshold
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_total_cap
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_sar_enable
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_sw_reset
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_earjack
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_baseline
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_raw
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_gain
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_check
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_sar_only_mode
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_sar_press_threshold
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_sar_release_threshold
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_firm_version_phone
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_firm_version_panel
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_firm_update
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_firm_update_status
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_irq_state
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_irq_en_cnt
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_reg_rw
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_crc_check
+    chown system radio /sys/class/sensors/grip_sensor_wifi/grip_sw_reset_ready
+
+# ALS_rear_sensor
+    chown system radio /sys/class/sensors/als_rear/name
+    chown system radio /sys/class/sensors/als_rear/vendor
+    chown system radio /sys/class/sensors/als_rear/part_type
+    chown system radio /sys/class/sensors/als_rear/device_id
+    chown system radio /sys/class/sensors/als_rear/als_flush
+    chown system system /sys/class/sensors/als_rear/write_reg
+    chown system system /sys/class/sensors/als_rear/read_reg
+    chown system system /sys/class/sensors/als_rear/eol_mode
+    chown system system /sys/class/sensors/als_rear/eol_spec
+    chown system system /sys/class/sensors/als_rear/als_factory_cmd
+    chown system system /sys/class/sensors/als_rear/als_red
+    chown system system /sys/class/sensors/als_rear/als_green
+    chown system system /sys/class/sensors/als_rear/als_blue
+    chown system system /sys/class/sensors/als_rear/als_ir
+    chown system system /sys/class/sensors/als_rear/als_clear
+    chown system system /sys/class/sensors/als_rear/als_version
+    chown system system /sys/class/sensors/als_rear/als_raw_data
+    chown system system /sys/class/sensors/als_rear/als_debug
+    chown system system /sys/class/sensors/als_rear/flicker_data
+    chown system system /sys/class/sensors/als_rear/i2c_err_cnt
+    chown system system /sys/class/sensors/als_rear/int_pin_check
+    chown system system /sys/class/sensors/als_rear/mode_cnt
+    chown system system /sys/class/sensors/als_rear/curr_adc
+    chown system system /sys/class/sensors/als_rear/sensor_info
+    chown system system /dev/als_rear
+    chmod 0600 /dev/als_rear
+
+# Camera Start
+    # Camera::Rear Start
+    # Camera::Rear1
+    chown system system /sys/class/camera/rear/companion_ic_check
+    chown system system /sys/class/camera/rear/isp_core
+    chown system system /sys/class/camera/rear/rear_camfw
+    chown system system /sys/class/camera/rear/rear_camfw_full
+    chown system system /sys/class/camera/rear/rear_camfw_load
+    chown system system /sys/class/camera/rear/rear_camtype
+    chown system system /sys/class/camera/rear/rear_companionfw_full
+    chown system system /sys/class/camera/rear/rear_calcheck
+    chown system system /sys/class/camera/rear/rear_fwcheck
+    chown system system /sys/class/camera/rear/rear_checkfw_user
+    chown system system /sys/class/camera/rear/rear_checkfw_factory
+    chown system system /sys/class/camera/rear/rear_moduleinfo
+    chown system system /sys/class/camera/rear/rear_afcal
+    chown system system /sys/class/camera/rear/rear_caminfo
+    chown system system /sys/class/camera/rear/rear_sensorid_exif
+    chown system system /sys/class/camera/rear/rear_moduleid
+    chown system system /sys/class/camera/rear/rear_mtf_exif
+    chown system system /sys/class/camera/rear/rear_mtf2_exif
+    chown system system /sys/class/camera/rear/rear_paf_offset_mid
+    chown system system /sys/class/camera/rear/rear_paf_offset_far
+    chown system system /sys/class/camera/rear/rear_paf_cal_check
+    chown system system /sys/class/camera/rear/rear_f2_paf_offset_mid
+    chown system system /sys/class/camera/rear/rear_f2_paf_offset_far
+    chown system system /sys/class/camera/rear/rear_f2_paf_cal_check
+    chown system system /sys/class/camera/rear/rear_dualcal
+    chown system system /sys/class/camera/rear/rear_dualcal_size
+    chown system system /sys/class/camera/rear/rear_hwparam
+    chown system system /sys/class/camera/rear/ssrm_camera_info
+    chown system system /sys/class/camera/rear/rear_frs_test
+    chown system system /sys/class/camera/rear/cam_ln_test
+    chown system system /sys/class/camera/rear/supported_cameraIds
+    chown system system /sys/class/camera/rear/rear_aperture_halltest
+    chown system system /sys/class/camera/rear/rear_tofcal
+    chown system system /sys/class/camera/rear/rear_tofcal_extra
+    chown system system /sys/class/camera/rear/rear_tofcal_size
+    chown system system /sys/class/camera/rear/rear_tofcal_uid
+    chown system system /sys/class/camera/rear/rear_tof_dual_cal
+
+    # Camera::Rear2
+    chown system system /sys/class/camera/rear/rear2_moduleid
+    chown system system /sys/class/camera/rear/rear2_caminfo
+    chown system system /sys/class/camera/rear/rear2_camfw
+    chown system system /sys/class/camera/rear/rear2_camfw_full
+    chown system system /sys/class/camera/rear/rear2_camfw_load
+    chown system system /sys/class/camera/rear/rear2_checkfw_user
+    chown system system /sys/class/camera/rear/rear2_checkfw_factory
+    chown system system /sys/class/camera/rear/rear2_moduleinfo
+    chown system system /sys/class/camera/rear/rear2_mtf_exif
+    chown system system /sys/class/camera/rear/rear2_sensorid_exif
+    chown system system /sys/class/camera/rear/rear2_hwparam
+    chown system system /sys/class/camera/rear/rear2_dualcal
+    chown system system /sys/class/camera/rear/rear2_dualcal_size
+    chown system system /sys/class/camera/rear/rear2_tilt
+    chown system system /sys/class/camera/rear/rear2_camtype
+    chown system system /sys/class/camera/rear/rear2_tof_tilt
+
+    # Camera::Rear3
+    chown system system /sys/class/camera/rear/rear3_camfw
+    chown system system /sys/class/camera/rear/rear3_caminfo
+    chown system system /sys/class/camera/rear/rear3_afcal
+    chown system system /sys/class/camera/rear/rear3_camtype
+    chown system system /sys/class/camera/rear/rear3_moduleinfo
+    chown system system /sys/class/camera/rear/rear3_mtf_exif
+    chown system system /sys/class/camera/rear/rear3_sensorid_exif
+    chown system system /sys/class/camera/rear/rear3_tilt
+    chown system system /sys/class/camera/rear/rear3_hwparam
+    chown system system /sys/class/camera/rear/rear3_dualcal
+    chown system system /sys/class/camera/rear/rear3_dualcal_size
+    chown system system /sys/class/camera/rear/rear3_paf_cal_check
+    chown system system /sys/class/camera/rear/rear3_camfw_full
+    chown system system /sys/class/camera/rear/rear3_checkfw_factory
+    chown system system /sys/class/camera/rear/rear3_checkfw_user
+    chown system system /sys/class/camera/rear/rear3_moduleid
+
+    # Camera::Rear ToF
+    chown system system /sys/class/camera/rear/rear_tof_caminfo
+    chown system system /sys/class/camera/rear/rear_tof_moduleinfo
+    chown system system /sys/class/camera/rear/rear_tof_camfw
+    chown system system /sys/class/camera/rear/rear_tof_camfw_full
+    chown system system /sys/class/camera/rear/rear_tof_checkfw_factory
+    chown system system /sys/class/camera/rear/rear_tof_sensorid_exif
+    chown system system /sys/class/camera/rear/rear_tofcal
+    chown system system /sys/class/camera/rear/rear_tofcal_extra
+    chown system system /sys/class/camera/rear/rear_tofcal_size
+    chown system system /sys/class/camera/rear/rear_tofcal_uid
+    chown system system /sys/class/camera/rear/rear_tof_dual_cal
+    chown system system /sys/class/camera/rear/rear_tof_cal_result
+    chown system system /sys/class/camera/rear/rear4_moduleid
+    chown system system /sys/class/camera/rear/rear_tof_ld_onoff
+    chown system system /sys/class/camera/rear/rear_tof_ae_value
+    chown system system /sys/class/camera/rear/rear_tof_check_pd
+    chown system system /sys/class/camera/rear/rear_tof_fps
+    chown system system /sys/class/camera/rear/rear_tof_freq
+    chown system system /sys/class/camera/rear/rear_tof_get_validation
+    chown system system /sys/class/camera/rear/rear_tof_laser_error_flag
+    chown system system /sys/class/camera/rear/rear_tof_camfw_load
+    chown system system /sys/class/camera/rear/rear_tof_checkfw_user
+    chown system system /sys/class/camera/rear/rear_tof_moduleid
+    chown system system /sys/class/camera/rear/rear_tof_tilt
+
+    # Camera::Rear End
+
+    # Camera::Front Start
+    # Camera::Front1
+    chown system system /sys/class/camera/front/front_camfw
+    chown system system /sys/class/camera/front/front_camtype
+    chown system system /sys/class/camera/front/front_caminfo
+    chown system system /sys/class/camera/front/front_camfw_full
+    chown system system /sys/class/camera/front/front_camfw_load
+    chown system system /sys/class/camera/front/front_checkfw_user
+    chown system system /sys/class/camera/front/front_checkfw_factory
+    chown system system /sys/class/camera/front/front_moduleinfo
+    chown system system /sys/class/camera/front/front_afcal
+    chown system system /sys/class/camera/front/front_sensorid_exif
+    chown system system /sys/class/camera/front/front_moduleid
+    chown system system /sys/class/camera/front/front_mtf_exif
+    chown system system /sys/class/camera/front/front_hwparam
+    chown system system /sys/class/camera/front/front_mipi_clock
+    chown system system /sys/class/camera/front/front_paf_cal_check
+    chown system system /sys/class/camera/front/front_tofcal
+    chown system system /sys/class/camera/front/front_tofcal_extra
+    chown system system /sys/class/camera/front/front_tofcal_size
+    chown system system /sys/class/camera/front/front_tofcal_uid
+
+
+    # Camera::Front2
+    chown system system /sys/class/camera/front/front2_camfw
+    chown system system /sys/class/camera/front/front2_camtype
+    chown system system /sys/class/camera/front/front2_caminfo
+    chown system system /sys/class/camera/front/front2_camfw_full
+    chown system system /sys/class/camera/front/front2_checkfw_user
+    chown system system /sys/class/camera/front/front2_checkfw_factory
+    chown system system /sys/class/camera/front/front2_moduleinfo
+    chown system system /sys/class/camera/front/front2_moduleid
+    chown system system /sys/class/camera/front/front2_mtf_exif
+    chown system system /sys/class/camera/front/front2_hwparam
+    chown system system /sys/class/camera/front/front2_dualcal
+    chown system system /sys/class/camera/front/front2_dualcal_size
+    chown system system /sys/class/camera/front/front2_tilt
+
+    # Camera::Front3
+    chown system system /sys/class/camera/front/front3_camfw
+    chown system system /sys/class/camera/front/front3_camtype
+    chown system system /sys/class/camera/front/front3_caminfo
+    chown system system /sys/class/camera/front/front3_camfw_full
+    chown system system /sys/class/camera/front/front3_camfw_load
+    chown system system /sys/class/camera/front/front3_checkfw_user
+    chown system system /sys/class/camera/front/front3_checkfw_factory
+    chown system system /sys/class/camera/front/front3_moduleinfo
+    chown system system /sys/class/camera/front/front3_afcal
+    chown system system /sys/class/camera/front/front3_moduleid
+    chown system system /sys/class/camera/front/front3_mtf_exif
+    chown system system /sys/class/camera/front/front3_hwparam
+
+    # Camera::Front ToF
+    chown system system /sys/class/camera/front/front_tof_caminfo
+    chown system system /sys/class/camera/front/front_tof_moduleinfo
+    chown system system /sys/class/camera/front/front_tof_camfw
+    chown system system /sys/class/camera/front/front_tof_camfw_full
+    chown system system /sys/class/camera/front/front_tof_checkfw_factory
+    chown system system /sys/class/camera/front/front_tof_sensorid_exif
+    chown system system /sys/class/camera/front/front_tofcal
+    chown system system /sys/class/camera/front/front_tofcal_extra
+    chown system system /sys/class/camera/front/front_tofcal_size
+    chown system system /sys/class/camera/front/front_tofcal_uid
+    chown system system /sys/class/camera/front/front_tof_dual_cal
+    chown system system /sys/class/camera/front/front_tof_cal_result
+    chown system system /sys/class/camera/front/front_tof_ld_onoff
+    chown system system /sys/class/camera/front/front_tof_ae_value
+    chown system system /sys/class/camera/front/front_tof_check_pd
+    chown system system /sys/class/camera/front/front_tof_fps
+    chown system system /sys/class/camera/front/front_tof_freq
+
+    # Camera::Front End
+
+    # Camera::Secure
+    chown system system /sys/class/camera/secure/iris_camfw
+    chown system system /sys/class/camera/secure/iris_camfw_full
+    chown system system /sys/class/camera/secure/iris_checkfw_factory
+    chown system system /sys/class/camera/secure/iris_checkfw_user
+    chown system system /sys/class/camera/secure/iris_caminfo
+    chown system system /sys/class/camera/secure/iris_hwparam
+
+    # Camera::Flash
+    chown system system /sys/class/camera/flash/rear_flash
+
+    # Camera::Ois
+    chown system system /sys/class/camera/ois/selftest
+    chown system system /sys/class/camera/ois/calibrationtest
+    chown system system /sys/class/camera/ois/ois_power
+    chown system system /sys/class/camera/ois/ois_rawdata
+    chown system system /sys/class/camera/ois/oisfw
+    chown system system /sys/class/camera/ois/ois_diff
+    chown system system /sys/class/camera/ois/ois_exif
+    chown system system /sys/class/camera/ois/autotest
+    chown system system /sys/class/camera/ois/autotest_2nd
+    chown system system /sys/class/camera/ois/ois_gain_rear
+    chown system system /sys/class/camera/ois/ois_gain_rear3
+    chown system system /sys/class/camera/ois/ois_supperssion_ratio_rear
+    chown system system /sys/class/camera/ois/ois_supperssion_ratio_rear3
+    chown system system /sys/class/camera/ois/ois_hall_position
+    chown system system /sys/class/camera/ois/reset_check
+
+    # Camera::Ssm
+    chown system system /sys/class/camera/ssm/ssm_frame_id
+    chown system system /sys/class/camera/ssm/ssm_flicker_max_r
+    chown system system /sys/class/camera/ssm/ssm_flicker_max_g
+    chown system system /sys/class/camera/ssm/ssm_flicker_max_b
+    chown system system /sys/class/camera/ssm/ssm_flicker_coeff
+
+    # Camera::Af
+    chown system system /sys/class/camera/af/af_position
+
+    # Camera::Boost
+    chown cameraserver cameraserver /sys/kernel/mm/vmscan/mem_boost_mode
+
+    # Camera::Dual
+    chown system system /sys/class/camera/dual/fallback
+
+    # Camera::Adaptive mipi
+    chown system system /sys/class/camera/test/adaptive_test
+
+    #Camera SVC
+    chown system system /sys/devices/svc/Camera/SVC_rear_module
+    chown system system /sys/devices/svc/Camera/SVC_rear_module2
+    chown system system /sys/devices/svc/Camera/SVC_rear_module3
+    chown system system /sys/devices/svc/Camera/SVC_rear_module4
+    chown system system /sys/devices/svc/Camera/SVC_front_module
+    chown system system /sys/devices/svc/Camera/SVC_front_module2
+# Camera End
+
+# SSC CORE
+    chown system radio /sys/class/sensors/ssc_core/operation_mode
+    chown system log /sys/class/sensors/ssc_core/dumpstate
+    chown system radio /sys/class/sensors/ssc_core/ssc_pid
+    chown system radio /sys/class/sensors/ssc_core/mode
+    chown system radio /sys/class/sensors/ssc_core/ssr_msg
+    chown system radio /sys/class/sensors/ssc_core/ssr_reset
+    chown system system /sys/class/sensors/ssc_core/remove_sysfs
+    chown system radio /sys/class/sensors/ssc_core/fac_fstate
+    chown system system /sys/class/sensors/ssc_core/support_algo
+    chown system system /sys/class/sensors/ssc_core/support_dual_sensor
+    chown system radio /sys/class/sensors/ssc_core/abs_lcd_onoff
+    chown system system /sys/class/sensors/ssc_core/sensor_dump
+    chown system system /sys/class/sensors/ssc_core/ssc_firmware_info
+
+    setprop debug.sensor.logging.slpi true
+
+# Permissions for Charging
+    mkdir /efs/Battery 0775 radio system
+    chown radio system /efs/Battery
+    chmod 0775 /efs/Battery
+    copy /system/vendor/firmware/battery_data.dat /efs/Battery/battery_data.dat
+    chmod 0400 /efs/Battery/battery_data.dat
+    write /sys/class/power_supply/battery/batt_update_data "/efs/Battery/battery_data.dat"
+    chown system radio /sys/class/power_supply/battery/batt_ext_dev_chg
+    chown system radio /sys/class/power_supply/battery/batt_temp_control_test
+    chown system radio /efs/Battery/fg_full_voltage
+    chown system radio /sys/class/power_supply/battery/fg_full_voltage
+    chown system radio /sys/class/power_supply/battery/batt_self_discharging_control
+    chown system radio /sys/class/power_supply/battery/batt_inbat_wireless_cs100
+    chmod 0664 /efs/Battery/fg_full_voltage
+    chmod 0664 /sys/class/power_supply/battery/fg_full_voltage
+    chown system radio /sys/class/power_supply/battery/batt_reset_soc
+    chown system radio /sys/class/power_supply/battery/batt_slate_mode
+    chown system radio /sys/class/power_supply/battery/batt_swelling_control
+    chown system radio /sys/class/power_supply/battery/factory_mode
+    chown system radio /sys/class/power_supply/battery/siop_level
+    chown system radio /sys/class/power_supply/battery/siop_event
+    chown system radio /sys/class/power_supply/battery/batt_temp
+    chown system radio /sys/class/power_supply/battery/wc_enable
+    chown system radio /sys/class/power_supply/battery/factory_mode_relieve
+    chown system radio /sys/class/power_supply/battery/factory_mode_bypass
+    chown system radio /sys/class/power_supply/battery/normal_mode_bypass
+    chown system radio /sys/class/power_supply/battery/factory_voltage_regulation
+    chown system radio /sys/class/power_supply/battery/factory_mode_disable
+    chown system nfc /sys/class/power_supply/battery/wc_control
+    chown system nfc /sys/class/power_supply/battery/wc_control_cnt
+    chown system nfc /sys/class/power_supply/battery/led_cover
+    chown system radio /sys/class/power_supply/battery/update
+    chown system radio /sys/class/power_supply/battery/batt_wdt_control
+    chown system sdcard_rw /sys/class/power_supply/battery/store_mode
+    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/call
+    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/video
+    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/music
+    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/browser
+    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/hotspot
+    chown sdcard_rw sdcard_rw /sys/class/power_supply/battery/camera
+    chown system radio /sys/class/power_supply/battery/talk_wcdma
+    chown system radio /sys/class/power_supply/battery/talk_gsm
+    chown system radio /sys/class/power_supply/battery/call
+    chown system radio /sys/class/power_supply/battery/data_call
+    chown system radio /sys/class/power_supply/battery/gps
+    chown system radio /sys/class/power_supply/battery/wifi
+    chown system radio /sys/class/power_supply/battery/lte
+    chown system radio /sys/class/power_supply/battery/lcd
+    chown system radio /sys/class/power_supply/ps/status
+    chmod 0664 /sys/class/power_supply/battery/wc_control
+    chmod 0664 /sys/class/power_supply/battery/wc_control_cnt
+    chmod 0664 /sys/class/power_supply/battery/led_cover
+    chmod 0664 /sys/class/power_supply/ps/status
+    chmod 0664 /sys/class/power_supply/battery/batt_temp_table
+    chown system radio /sys/class/power_supply/battery/batt_temp_table
+    chown system radio /sys/class/power_supply/battery/batt_high_current_usb
+    chown system radio /sys/class/power_supply/battery/batt_inbat_voltage
+    chmod 0664 /sys/class/power_supply/battery/batt_high_current_usb
+    chown system radio /sys/class/power_supply/battery/hmt_ta_connected
+    chown system radio /sys/class/power_supply/battery/hmt_ta_charge
+    chown system radio /sys/class/power_supply/battery/battery_cycle
+    chown system radio /sys/class/power_supply/otg/online
+    chmod 0664 /sys/class/power_supply/otg/online
+    chown system radio /sys/class/power_supply/battery/charge_otg_control
+    chown system radio /sys/class/power_supply/battery/charge_uno_control
+    chown system radio /sys/class/power_supply/battery/batt_wireless_firmware_update
+    chown system radio /sys/class/power_supply/battery/otp_firmware_result
+    chown system radio /sys/class/power_supply/battery/wc_ic_grade
+    chown system radio /sys/class/power_supply/battery/wc_ic_chip_id
+    chown system radio /sys/class/power_supply/battery/otp_firmware_ver_bin
+    chown system radio /sys/class/power_supply/battery/otp_firmware_ver
+    chown system radio /sys/class/power_supply/battery/tx_firmware_result
+    chown system radio /sys/class/power_supply/battery/batt_tx_firmware
+    chown system radio /sys/class/power_supply/battery/batt_hv_wireless_status
+    chown system radio /sys/class/power_supply/battery/batt_hv_wireless_pad_ctrl
+    chmod 0664 /sys/class/power_supply/battery/charge_otg_control
+    chmod 0664 /sys/class/power_supply/battery/charge_uno_control
+    chmod 0664 /sys/class/power_supply/battery/batt_wireless_firmware_update
+    chmod 0664 /sys/class/power_supply/battery/otp_firmware_result
+    chmod 0664 /sys/class/power_supply/battery/wc_ic_grade
+    chmod 0664 /sys/class/power_supply/battery/wc_ic_chip_id
+    chmod 0664 /sys/class/power_supply/battery/otp_firmware_ver_bin
+    chmod 0664 /sys/class/power_supply/battery/otp_firmware_ver
+    chmod 0664 /sys/class/power_supply/battery/tx_firmware_result
+    chmod 0664 /sys/class/power_supply/battery/tx_firmware_ver
+    chmod 0664 /sys/class/power_supply/battery/batt_tx_firmware
+    chmod 0664 /sys/class/power_supply/battery/batt_hv_wireless_status
+    chmod 0664 /sys/class/power_supply/battery/batt_hv_wireless_pad_ctrl
+    chown system radio /sys/class/power_supply/battery/tx_firmware_result
+    chown system radio /sys/class/power_supply/battery/batt_tune_chg_limit_cur
+    chown system radio /sys/class/power_supply/battery/batt_tune_chg_temp_high
+    chown system radio /sys/class/power_supply/battery/batt_tune_chg_temp_rec
+    chown system radio /sys/class/power_supply/battery/batt_tune_coil_limit_cur
+    chown system radio /sys/class/power_supply/battery/batt_tune_coil_temp_high
+    chown system radio /sys/class/power_supply/battery/batt_tune_coil_temp_rec
+    chown system radio /sys/class/power_supply/battery/batt_tune_wpc_temp_high
+    chown system radio /sys/class/power_supply/battery/batt_tune_wpc_temp_high_rec
+    chown system radio /sys/class/power_supply/battery/batt_tune_dchg_temp_high
+    chown system radio /sys/class/power_supply/battery/batt_tune_dchg_temp_high_rec
+    chown system radio /sys/class/power_supply/battery/batt_tune_dchg_batt_temp_high
+    chown system radio /sys/class/power_supply/battery/batt_tune_dchg_batt_temp_high_rec
+    chown system radio /sys/class/power_supply/battery/batt_tune_dchg_limit_input_cur
+    chown system radio /sys/class/power_supply/battery/batt_tune_dchg_limit_chg_cur
+    chown system radio /sys/class/power_supply/battery/batt_tune_fast_charge_current
+    chown system radio /sys/class/power_supply/battery/batt_tune_float_voltage
+    chown system radio /sys/class/power_supply/battery/batt_tune_intput_charge_current
+    chown system radio /sys/class/power_supply/battery/batt_tune_temp_high_event
+    chown system radio /sys/class/power_supply/battery/batt_tune_temp_high_normal
+    chown system radio /sys/class/power_supply/battery/batt_tune_temp_high_rec_event
+    chown system radio /sys/class/power_supply/battery/batt_tune_temp_high_rec_normal
+    chown system radio /sys/class/power_supply/battery/batt_tune_temp_low_event
+    chown system radio /sys/class/power_supply/battery/batt_tune_temp_low_normal
+    chown system radio /sys/class/power_supply/battery/batt_tune_temp_low_rec_event
+    chown system radio /sys/class/power_supply/battery/batt_tune_temp_low_rec_normal
+    chown system radio /sys/class/power_supply/battery/batt_tune_ui_term_cur_1st
+    chown system radio /sys/class/power_supply/battery/batt_tune_ui_term_cur_2nd
+    chown system radio /sys/class/power_supply/battery/batt_misc_event
+    chown system radio /sys/class/power_supply/battery/batt_tx_event
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_chg_limit_cur
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_chg_temp_high
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_chg_temp_rec
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_coil_limit_cur
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_coil_temp_high
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_coil_temp_rec
+    chown 0664 /sys/class/power_supply/battery/batt_tune_wpc_temp_high
+    chown 0664 /sys/class/power_supply/battery/batt_tune_wpc_temp_high_rec
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_dchg_temp_high
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_dchg_temp_high_rec
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_dchg_batt_temp_high
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_dchg_batt_temp_high_rec
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_dchg_limit_input_cur
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_dchg_limit_chg_cur
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_fast_charge_current
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_float_voltage
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_intput_charge_current
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_high_normal
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_high_rec_normal
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_low_normal
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_temp_low_rec_normal
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_ui_term_cur_1st
+    chmod 0664 /sys/class/power_supply/battery/batt_tune_ui_term_cur_2nd
+    chmod 0664 /sys/class/power_supply/battery/batt_misc_event
+    chmod 0664 /sys/class/power_supply/battery/batt_tx_event
+    chown system radio /sys/class/power_supply/battery/batt_filter_cfg
+    chown system radio /sys/class/power_supply/battery/batt_current_ua_avg
+    chown system radio /sys/class/power_supply/battery/batt_current_ua_now
+    chown system radio /sys/class/power_supply/battery/voltage_avg
+    chown system radio /sys/class/power_supply/battery/voltage_now
+    chown system radio /sys/class/power_supply/battery/mode
+    chown system radio /sys/class/power_supply/battery/safety_timer_set
+    chown system radio /sys/class/power_supply/battery/safety_timer_info
+    chown system radio /sys/class/power_supply/battery/batt_temp_test
+    chmod 0664 /sys/class/power_supply/battery/mode
+    chown system radio /sys/class/power_supply/battery/wc_op_freq
+    chmod 0664 /sys/class/power_supply/battery/wc_op_freq
+    chown system radio /sys/class/power_supply/battery/wc_cmd_info
+    chmod 0664 /sys/class/power_supply/battery/wc_cmd_info
+    chown system radio /sys/class/power_supply/battery/error_cause
+    chmod 0440 /sys/class/power_supply/battery/error_cause
+    chown system radio /sys/class/power_supply/battery/batt_capacity_max
+    chmod 0660 /sys/class/power_supply/battery/batt_capacity_max
+    chown radio system /efs/Battery/batt_capacity_max
+    chmod 0664 /efs/Battery/batt_capacity_max
+    chown system radio /sys/class/power_supply/battery/cisd_fullcaprep_max
+    chmod 0660 /sys/class/power_supply/battery/cisd_fullcaprep_max
+    chown system radio /sys/class/power_supply/battery/cisd_wire_count
+    chmod 0660 /sys/class/power_supply/battery/cisd_wire_count
+    chown system radio /sys/class/power_supply/battery/batt_type
+    chmod 0660 /sys/class/power_supply/battery/batt_type
+    chown system radio /sys/class/power_supply/battery/cisd_data
+    chmod 0660 /sys/class/power_supply/battery/cisd_data
+    chown system radio /sys/class/power_supply/battery/cisd_data_json
+    chmod 0660 /sys/class/power_supply/battery/cisd_data_json
+    chown system radio /sys/class/power_supply/battery/cisd_data_d_json
+    chmod 0660 /sys/class/power_supply/battery/cisd_data_d_json
+    chown system system /efs/FactoryApp/cisd_data
+    chmod 0660 /efs/FactoryApp/cisd_data
+    chown system radio /sys/class/power_supply/battery/cisd_wc_data
+    chmod 0660 /sys/class/power_supply/battery/cisd_wc_data
+    chown system radio /sys/class/power_supply/battery/cisd_wc_data_json
+    chmod 0660 /sys/class/power_supply/battery/cisd_wc_data_json
+    chown system system /efs/FactoryApp/cisd_wc_data
+    chmod 0660 /efs/FactoryApp/cisd_wc_data
+    chown system radio /sys/class/power_supply/battery/cisd_power_data
+    chmod 0660 /sys/class/power_supply/battery/cisd_power_data
+    chown system radio /sys/class/power_supply/battery/cisd_power_data_json
+    chmod 0660 /sys/class/power_supply/battery/cisd_power_data_json
+    chown system system /efs/FactoryApp/cisd_power_data
+    chmod 0660 /efs/FactoryApp/cisd_power_data
+    chown system radio /sys/class/power_supply/battery/cisd_cable_data
+    chmod 0660 /sys/class/power_supply/battery/cisd_cable_data
+    chown system radio /sys/class/power_supply/battery/cisd_cable_data_json
+    chmod 0660 /sys/class/power_supply/battery/cisd_cable_data_json
+    chown system system /efs/FactoryApp/cisd_cable_data
+    chmod 0660 /efs/FactoryApp/cisd_cable_data
+    chown system radio /sys/class/power_supply/battery/cisd_tx_data
+    chmod 0660 /sys/class/power_supply/battery/cisd_tx_data
+    chown system radio /sys/class/power_supply/battery/cisd_tx_data_json
+    chmod 0660 /sys/class/power_supply/battery/cisd_tx_data_json
+    chown system system /efs/FactoryApp/cisd_tx_data
+    chmod 0660 /efs/FactoryApp/cisd_tx_data
+    chown system system /sys/class/power_supply/battery/fg_asoc
+    chmod 0660 /sys/class/power_supply/battery/fg_asoc
+    chown system system /sys/class/power_supply/battery/fg_capacity
+    chmod 0640 /sys/class/power_supply/battery/fg_capacity
+    chown system system /sys/class/power_supply/battery/fg_fullcapnom
+    chmod 0640 /sys/class/power_supply/battery/fg_fullcapnom
+    chown system system /sys/class/power_supply/battery/batt_jig_gpio
+    chmod 0664 /sys/class/power_supply/battery/batt_jig_gpio
+    chown system radio /sys/class/power_supply/battery/wc_tx_en
+    chmod 0664 /sys/class/power_supply/battery/wc_tx_en
+    chown system system /dev/batt_misc
+    chmod 0664 /dev/batt_misc
+
+    chown system radio /sys/class/power_supply/battery/wc_tx_stop_capacity
+    chmod 0660 /sys/class/power_supply/battery/wc_tx_stop_capacity
+    chown system radio /sys/class/power_supply/battery/wc_tx_vout
+    chmod 0664 /sys/class/power_supply/battery/wc_tx_vout
+    chown system radio /sys/class/power_supply/battery/batt_tx_status
+    chmod 0664 /sys/class/power_supply/battery/batt_tx_status
+    chown system radio /sys/class/power_supply/battery/wc_rx_connected
+    chmod 0660 /sys/class/power_supply/battery/wc_rx_connected
+    chown system radio /sys/class/power_supply/battery/wc_tx_mfc_vin_from_uno
+    chmod 0660 /sys/class/power_supply/battery/wc_tx_mfc_vin_from_uno
+    chown system radio /sys/class/power_supply/battery/wc_tx_mfc_iin_from_uno
+    chmod 0660 /sys/class/power_supply/battery/wc_tx_mfc_iin_from_uno
+	chown system radio /sys/class/power_supply/battery/wc_tx_avg_curr
+	chmod 0660 /sys/class/power_supply/battery/wc_tx_avg_curr
+    chown system radio /sys/class/power_supply/battery/wc_tx_total_pwr
+    chmod 0660 /sys/class/power_supply/battery/wc_tx_total_pwr
+    chown system radio /sys/class/power_supply/battery/wc_tx_id
+    chmod 0664 /sys/class/power_supply/battery/wc_tx_id
+    chown system radio /sys/class/power_supply/battery/wc_auth_adt_sent
+    chmod 0660 /sys/class/power_supply/battery/wc_auth_adt_sent
+    chown system radio /sys/class/power_supply/battery/wc_duo_rx_power
+    chmod 0660 /sys/class/power_supply/battery/wc_duo_rx_power
+	chown system radio /sys/class/power_supply/battery/ext_event
+	chmod 0660 /sys/class/power_supply/battery/ext_event
+    chown system system /sys/class/power_supply/battery/batt_shipmode_test
+    chmod 0660 /sys/class/power_supply/battery/batt_shipmode_test
+    chown system radio /sys/class/power_supply/battery/vbyp_voltage
+    chmod 0660 /sys/class/power_supply/battery/vbyp_voltage
+    chown system radio /sys/class/power_supply/battery/batt_main_voltage
+    chmod 0660 /sys/class/power_supply/battery/batt_main_voltage
+    chown system radio /sys/class/power_supply/battery/batt_sub_voltage
+    chmod 0660 /sys/class/power_supply/battery/batt_sub_voltage
+    chown system radio /sys/class/power_supply/battery/batt_main_current_ma
+    chmod 0660 /sys/class/power_supply/battery/batt_main_current_ma
+    chown system radio /sys/class/power_supply/battery/batt_sub_current_ma
+    chmod 0660 /sys/class/power_supply/battery/batt_sub_current_ma
+    chown system radio /sys/class/power_supply/battery/batt_main_con_det
+    chmod 0660 /sys/class/power_supply/battery/batt_main_con_det
+    chown system radio /sys/class/power_supply/battery/batt_sub_con_det
+    chmod 0660 /sys/class/power_supply/battery/batt_sub_con_det
+    chown system radio /sys/class/power_supply/battery/batt_main_enb
+    chmod 0660 /sys/class/power_supply/battery/batt_main_enb
+    chown system radio /sys/class/power_supply/battery/batt_sub_enb
+    chmod 0660 /sys/class/power_supply/battery/batt_sub_enb
+    chown system radio /sys/class/power_supply/battery/direct_charging_status
+    chmod 0660 /sys/class/power_supply/battery/direct_charging_status
+    chown system radio /sys/class/power_supply/battery/direct_charging_step
+    chmod 0660 /sys/class/power_supply/battery/direct_charging_step
+    chown system radio /sys/class/power_supply/battery/direct_charging_chg_status
+    chmod 0660 /sys/class/power_supply/battery/direct_charging_chg_status
+    chown system radio /sys/class/power_supply/battery/switch_charging_source
+    chmod 0660 /sys/class/power_supply/battery/switch_charging_source
+    chown system system /sys/class/power_supply/battery/dchg_adc_mode_ctrl
+    chmod 0664 /sys/class/power_supply/battery/dchg_adc_mode_ctrl
+    chown system radio /sys/class/power_supply/battery/boot_complete
+    chmod 0660 /sys/class/power_supply/battery/boot_complete
+    chown system radio /sys/class/power_supply/battery/batt_tune_wireless_vout_current
+    chmod 0660 /sys/class/power_supply/battery/batt_tune_wireless_vout_current
+    chown system radio /sys/class/power_supply/battery/pd_disable
+    chmod 0664 /sys/class/power_supply/battery/pd_disable
+
+# UFS
+    # Permission for ufs clk scailing
+    chown system root /sys/class/scsi_host/host0/../../../clkscale_enable
+    chmod 660 /sys/class/scsi_host/host0/../../../clkscale_enable
+
+    chown system system /sys/class/scsi_host/host0/unique_number
+    chmod 440 /sys/class/scsi_host/host0/unique_number
+    chown system system /sys/block/sda/device/model
+    chmod 444 /sys/block/sda/device/model
+    chown system system /sys/block/sda/device/rev
+    chmod 444 /sys/block/sda/device/rev
+    chown system system /sys/class/scsi_host/host0/lt
+    chmod 444 /sys/class/scsi_host/host0/lt
+    chown system system /sys/class/scsi_host/host0/SEC_UFS_err_sum
+    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_err_sum
+    chown system system /sys/class/scsi_host/host0/SEC_UFS_op_cnt
+    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_op_cnt
+    chown system system /sys/class/scsi_host/host0/SEC_UFS_query_cnt
+    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_query_cnt
+    chown system system /sys/class/scsi_host/host0/SEC_UFS_uic_cmd_cnt
+    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_uic_cmd_cnt
+    chown system system /sys/class/scsi_host/host0/SEC_UFS_uic_err_cnt
+    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_uic_err_cnt
+    chown system system /sys/class/scsi_host/host0/SEC_UFS_utp_cnt
+    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_utp_cnt
+    chown system system /sys/class/scsi_host/host0/SEC_UFS_fatal_cnt
+    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_fatal_cnt
+    chown system system /sys/class/scsi_host/host0/SEC_UFS_TW_info
+    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_TW_info
+    chown system system /sys/class/scsi_host/host0/SEC_UFS_HPB_info
+    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_HPB_info
+    chown system system /sys/class/scsi_host/host0/SEC_UFS_HPB_err_info
+    chmod 444 /sys/class/scsi_host/host0/SEC_UFS_HPB_err_info
+    chown system system /sys/class/scsi_host/host0/man_date
+    chmod 444 /sys/class/scsi_host/host0/man_date
+    chown system system /sys/class/scsi_host/host0/hw_rst_info
+    chmod 444 /sys/class/scsi_host/host0/hw_rst_info
+    chown system system /sys/block/sda/diskios
+    chmod 660 /sys/block/sda/diskios
+    chown system system /sys/class/scsi_host/host0/lc
+    chmod 444 /sys/class/scsi_host/host0/lc
+    chown system system /sys/block/sda/iomon
+    chown system system /sys/block/sda/hiotime
+    chown system system /sys/block/sda/iobd
+    chown system system /sys/block/sda/queue/io_volume_stats
+    chown system system /sys/block/sda/queue/tw_stats
+
+# MMC / SDcard
+    chown system system /sys/block/mmcblk0/device/unique_number
+    chmod 440 /sys/block/mmcblk0/device/unique_number
+    chown system system /sys/class/sec/mmc/mmc_data
+    chmod 444 /sys/class/sec/mmc/mmc_data
+    chown system system /sys/class/sec/mmc/mmc_summary
+    chmod 444 /sys/class/sec/mmc/mmc_summary
+    chown system system /sys/block/mmcblk0/device/cid
+    chmod 444 /sys/block/mmcblk0/device/cid
+    chown system system /sys/block/mmcblk1/device/cid
+    chmod 444 /sys/block/mmcblk1/device/cid
+    chown system system /sys/class/sec/sdcard/cd_cnt
+    chmod 444 /sys/class/sec/sdcard/cd_cnt
+    chown system system /sys/class/sec/sdcard/sdcard_summary
+    chmod 444 /sys/class/sec/sdcard/sdcard_summary
+    chown system system /sys/class/sec/sddata/sd_data
+    chmod 444 /sys/class/sec/sddata/sd_data
+    chown system system /sys/class/sec/sdinfo/sd_count
+    chmod 444 /sys/class/sec/sdinfo/sd_count
+    chown system system /sys/class/sec/sdinfo/data
+    chmod 444 /sys/class/sec/sdinfo/data
+    chown system system /sys/class/sec/sdinfo/fc
+    chmod 444 /sys/class/sec/sdinfo/fc
+
+# Permissions for Auto Input
+    chown system system /sys/class/sec/sec_auto_input/enable
+    chown system system /sys/class/sec/sec_auto_input/tsp_event
+
+# Permissions for sec_debug
+    chown root system /sys/class/sec/sec_debug/recovery_cause
+
+# Symbolic link for Securetouch
 on property:sys.boot_completed=1
-    write /dev/kmsg "Boot completed "
-    #Reset read ahead for dm-0 and dm-1 to 512kb
-    write /sys/block/dm-0/queue/read_ahead_kb 512
-    write /sys/block/dm-1/queue/read_ahead_kb 512
-    #WDSP FW boot sysfs node used by STHAL
-    chown media audio /sys/kernel/wdsp0/boot
-    chown media audio /sys/kernel/wcd_cpe0/fw_name
+    mkdir /data/vendor/tzstorage/sys 0711 system system
+    mkdir /data/vendor/tzstorage/sys/class 0711 system system
+    mkdir /data/vendor/tzstorage/sys/class/sec 0711 system system
+    symlink /sys/class/sec/tsp /data/vendor/tzstorage/sys/class/sec/tsp
 
-on property:persist.vendor.radio.atfwd.start=false
-    stop vendor.atfwd
-
-on property:vendor.radio.atfwd.start=false
-    stop vendor.atfwd
-
-# corefile limit
-on property:persist.debug.trace=1
-    mkdir /data/core 0777 root root
-    write /proc/sys/kernel/core_pattern "/data/core/%E.%p.%e"
-
-on property:init.svc.wpa_supplicant=stopped
-    stop dhcpcd
-
-#on property:vendor.bluetooth.dun.status=running
-#    start vendor.bt-dun
-
-#on property:vendor.bluetooth.dun.status=stopped
-#    stop vendor.bt-dun
-
-#on property:ro.bluetooth.ftm_enabled=true
-#    start ftmd
-
-#on property:vendor.bluetooth.startbtlogger=true
-#    start vendor.bt_logger
-
-#on property:vendor.bluetooth.startbtlogger=false
-#    stop vendor.bt_logger
-
-on property:vendor.media.target.version=*
-    setprop vendor.sys.media.target.version ${vendor.media.target.version}
-
-service qcom-c_core-sh  /vendor/bin/init.qcom.class_core.sh
-    class core
-    user root
-    oneshot
-
-service qcom-c_main-sh /vendor/bin/init.class_main.sh
-    class main
-    user root
-    group root system
-    oneshot
-
-on property:vold.decrypt=trigger_restart_framework
-    start qcom-c_main-sh
-    start wcnss-service
-
-on property:persist.env.fastdorm.enabled=true
-    setprop persist.radio.data_no_toggle 1
-
-service vendor.qrtr-ns /vendor/bin/qrtr-ns -f
-    class core
-    #user vendor_qrtr
-    #group vendor_qrtr
-    capabilities NET_BIND_SERVICE
-
-service irsc_util /vendor/bin/irsc_util "/vendor/etc/sec_config"
-    class core
-    user root
-    oneshot
-
-service vendor.rmt_storage /vendor/bin/rmt_storage
-    class core
-    user root
-    shutdown critical
-    ioprio rt 0
-
-service vendor.tftp_server /vendor/bin/tftp_server
-   class core
-   user root
-
-#service vendor.bt-dun /system/bin/dun-server /dev/smd7 /dev/rfcomm0
-#    class late_start
-#    user bluetooth
-#    group bluetooth net_bt_admin inet
-#    disabled
-#    oneshot
-
-#service vendor.bt_logger /system/bin/bt_logger
-#   user bluetooth
-#   group bluetooth net_bt_admin sdcard_rw sdcard_r media_rw
-#   class late_start
-#   disabled
-#   oneshot
-
-service vendor.bt_logger /system/bin/bt_logger
-   user bluetooth
-   group bluetooth net_bt_admin sdcard_rw sdcard_r media_rw
-   class late_start
-   disabled
-   oneshot
-
-service ftmd /system/bin/logwrapper /system/bin/ftmdaemon
-    class late_start
-    user root
-    group bluetooth net_bt_admin misc diag net_bt
-    disabled
-    oneshot
-
-#service ftmd /system/bin/logwrapper /system/bin/ftmdaemon
-#    class late_start
-#    user root
-#    group bluetooth net_bt_admin misc diag net_bt
-#    disabled
-#    oneshot
-
-service qmiproxy /system/bin/qmiproxy
-    class main
-    user radio
-    group radio diag
-    disabled
-
-service vendor.sensors /vendor/bin/sscrpcd sensorspd
-    class early_hal
-    user system
-    group system wakelock
-    capabilities BLOCK_SUSPEND
-    disabled
-
-#service vendor.sensors.qti /vendor/bin/sensors.qti
-#    class core
-#    user system
-#    group system
-#    disabled
-
-service factory_ssc /vendor/bin/factory.ssc
-    class core
-    user system
-    group system radio inet diag net_admin net_raw sdcard_rw sdcard_r media_rw
-    disabled
-
-# QMUX must be in multiple groups to support external process connections
-service vendor.qmuxd /system/vendor/bin/qmuxd
-    class main
-    user root
-    group bluetooth
-
-# Adjust socket buffer to enlarge TCP receive window for high bandwidth
-# but only if ro.data.large_tcp_window_size property is set.
-on property:ro.data.large_tcp_window_size=true
-    write /proc/sys/net/ipv4/tcp_adv_win_scale  2
-
-on property:sys.sysctl.tcp_adv_win_scale=*
-    write /proc/sys/net/ipv4/tcp_adv_win_scale ${sys.sysctl.tcp_adv_win_scale}
-
-service wpa_supplicant /vendor/bin/hw/wpa_supplicant \
-    -O/data/vendor/wifi/wpa/sockets -puse_p2p_group_interface=1 \
-    -g@android:vendor_wpa_wlan0
-#   we will start as root and wpa_supplicant will switch to user wifi
-#   after setting up the capabilities required for WEXT
-#   user wifi
-#   group wifi inet keystore
-    interface android.hardware.wifi.supplicant@1.0::ISupplicant default
-    interface android.hardware.wifi.supplicant@1.1::ISupplicant default
-    class main
-    socket vendor_wpa_wlan0 dgram 660 wifi wifi
-    disabled
-    oneshot
-
-service vendor.wigig_supplicant /vendor/bin/hw/wpa_supplicant \
-    -iwigig0 -Dnl80211 -c/data/vendor/wifi/wigig_supplicant.conf \
-    -m/data/vendor/wifi/wigig_p2p_supplicant.conf \
-    -O/data/vendor/wifi/wigig_sockets -dd \
-    -e/data/vendor/wifi/wigig_entropy.bin -g@android:wigig/wpa_wigig0 \
-    -S wigigsvc
-    #   we will start as root and wpa_supplicant will switch to user wifi
-    #   after setting up the capabilities required for WEXT
-    #   user wifi
-    #   group wifi inet keystore
-    class main
-    socket wigig/wpa_wigig0 dgram 660 wifi wifi
-    disabled
-    oneshot
-
-# Data Migration
-service vendor.move_wifi_data /system/bin/move_wifi_data.sh
-    class main
-    user  wifi
-    group wifi
-    disabled
-    oneshot
-
-service wigignpt /vendor/bin/wigignpt
-    interface vendor.qti.hardware.wigig.netperftuner@1.0::INetPerfTuner default
-    class hal
-    socket wigig/wigignpt stream 660 system wifi
-    user system
-    group wifi
-    capabilities NET_ADMIN
-    disabled
-
-on property:persist.vendor.wigig.npt.enable=1
-    start wigignpt
-
-service vendor.sensingdaemon /vendor/bin/sensingdaemon
-    class hal
-    socket wigig/sensingdaemon stream 660 system wifi
-    user system
-    group wifi
-    disabled
-
-service dhcpcd_wlan0 /system/bin/dhcpcd -ABKLG
-    class late_start
-    disabled
-    oneshot
-
-service dhcpcd_bond0 /system/bin/dhcpcd -ABKLG
-    class late_start
-    disabled
-    oneshot
-
-service dhcpcd_p2p /system/bin/dhcpcd -ABKLG
-    class late_start
-    disabled
-    oneshot
-
-service dhcpcd_wigig0 /system/bin/dhcpcd -ABKLG
-    class late_start
-    disabled
-    oneshot
-
-service iprenew_wlan0 /system/bin/dhcpcd -n
-    class late_start
-    disabled
-    oneshot
-
-service iprenew_bond0 /system/bin/dhcpcd -n
-    class late_start
-    disabled
-    oneshot
-
-service iprenew_p2p /system/bin/dhcpcd -n
-    class late_start
-    disabled
-    oneshot
-
-service iprenew_wigig0 /system/bin/dhcpcd -n
-    class late_start
-    disabled
-    oneshot
-
-service ptt_socket_app /system/vendor/bin/ptt_socket_app -d
-    class main
-    user wifi
-    group wifi system inet net_admin
-    capabilities NET_ADMIN
-    oneshot
-
-service ptt_ffbm /system/vendor/bin/ptt_socket_app -f -d
-    user root
-    group root
-    disabled
-    oneshot
-
-service wifi_ftmd /system/vendor/bin/wifi_ftmd
-    user system
-    group system inet net_admin
-    socket wififtmd_server dgram 0660 system system
-    disabled
-    oneshot
-
-on property:vendor.wifi.ftmd.load=true
-    insmod /system/lib/modules/pronto/pronto_wlan.ko con_mode=5
-
-service cnss-daemon /system/vendor/bin/cnss-daemon -n -l
-    class late_start
-    user system
-    group system inet net_admin wifi
-    capabilities NET_ADMIN
-
-on property:sys.shutdown.requested=*
-    write /sys/kernel/shutdown_wlan/shutdown 1
-    stop cnss-daemon
-
-service dhcpcd_bt-pan /system/bin/dhcpcd -BKLG
-    class late_start
-    disabled
-    oneshot
-
-service iprenew_bt-pan /system/bin/dhcpcd -n
-    class late_start
-    disabled
-    oneshot
-
-service ssgqmigd /vendor/bin/ssgqmigd
-    class late_start
-    user radio
-    group radio gps system
-    socket ssgqmig seqpacket 0660 radio inet
-
-service ssgtzd /vendor/bin/ssgtzd
-    class late_start
-    user system
-    group system
-    disabled
-    socket ssgtzd stream 0660 system inet
-
+# Pageboostd
 on property:sys.boot_completed=1
-    start ssgtzd
+    mkdir /data/misc/pageboost 0771 system system
 
-service mlid /vendor/bin/mlid
-    class late_start
-    user gps
-    group gps
-    socket mlid stream 0666 gps gps
+#qfp fingerprint daemon
+service qfp-daemon /vendor/bin/qfp-daemon
+	class late_start
+	user system
+	group system drmrpc diag input
 
-service loc_launcher /system/vendor/bin/loc_launcher
-    class late_start
-    user gps
-    group gps
-
-on property:crypto.driver.load=1
-     insmod /system/lib/modules/qce.ko
-     insmod /system/lib/modules/qcedev.ko
-
-service drmdiag /system/vendor/bin/drmdiagapp
-    class late_start
-     user root
-     disabled
-     oneshot
-
-on property:drmdiag.load=1
-    start drmdiag
-
-on property:drmdiag.load=0
-    stop drmdiag
-
-service qcom-sh /vendor/bin/init.qcom.sh
-    class late_start
-    user root
-    group root system radio
-    oneshot
-
-service vendor-sensor-sh /vendor/bin/init.qcom.sensors.sh
-    class core
-    user root
-    oneshot
-
-service crashdata-sh /vendor/bin/init.qcom.crashdata.sh
-    class late_start
-    user root
-    oneshot
-
-service qcom-post-boot /vendor/bin/init.qcom.post_boot.sh
-    class late_start
-    user root
-    group root system wakelock graphics
-    disabled
-    oneshot
-
-#     do not run the script for treble-based model
-#service qti-testscripts /system/bin/sh /system/etc/init.qcom.testscripts.sh
-#    class late_start
-#    user root
-#    disabled
-#    oneshot
-#    seclabel u:r:qti-testscripts:s0
-
-service wifi-sdio-on /vendor/bin/init.qcom.sdio.sh
-    class late_start
-    group wifi inet
-    disabled
-    oneshot
-
-service wifi-crda /vendor/bin/init.crda.sh
-   class late_start
-   user root
-   disabled
-   oneshot
-
-on property:sys.boot_completed=1
-    start qcom-post-boot
-#     do not run the script for treble-based model
-#    start qti-testscripts
-
-on property:ro.vendor.ril.mbn_copy_completed=1
-    write /data/vendor/radio/copy_complete 1
-
-service qvop-daemon /vendor/bin/qvop-daemon
-    class late_start
-    user system
-    group system drmrpc
-
-service vendor.atfwd /vendor/bin/ATFWD-daemon
-    class late_start
-    user system
-    group system radio
-
-service hostapd_fst /vendor/bin/hw/hostapd -dd -g /data/vendor/wifi/hostapd/global
-    class main
-    capabilities NET_ADMIN NET_RAW
-    user wifi
-    group wifi
-    disabled
-    oneshot
-
-service vendor.wigig_hostapd /vendor/bin/hw/hostapd -dd  -j wigighostapd /data/vendor/wifi/hostapd/wigig_hostapd.conf
-    class late_start
-    capabilities NET_ADMIN NET_RAW
-    user wifi
-    group wifi inet keystore
-    oneshot
-    disabled
-
-service ims_regmanager /system/vendor/bin/exe-ims-regmanagerprocessnative
-    class late_start
-    group net_bt_admin inet radio wifi
-    disabled
-
-on property:persist.ims.regmanager.mode=1
-    start ims_regmanager
-
-on property:ro.data.large_tcp_window_size=true
-    # Adjust socket buffer to enlarge TCP receive window for high bandwidth (e.g. DO-RevB)
-    write /proc/sys/net/ipv4/tcp_adv_win_scale  2
-
-service battery_monitor /system/bin/battery_monitor
-    user system
-    group system
-    disabled
-
-service vendor.ril-daemon2 /vendor/bin/hw/rild -c 2
-    class main
-    user radio
-    disabled
-    group radio cache inet misc audio sdcard_r sdcard_rw diag oem_2901 log
-    capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
-
-service vendor.ril-daemon3 /vendor/bin/hw/rild -c 3
-    class main
-    user radio
-    disabled
-    group radio cache inet misc audio sdcard_r sdcard_rw diag oem_2901 log
-    capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
-
-service profiler_daemon /system/bin/profiler_daemon
-    class late_start
-    user root
-    group root
-    disabled
-
-service charger /system/bin/charger
-    class charger
-    user system
-    group system graphics input
-    capabilities SYS_BOOT
-    seclabel u:r:charger:s0
-
-service vendor.ssr_diag /system/vendor/bin/ssr_diag
-    class late_start
-    user system
-    group system
-    disabled
-
-service hvdcp /system/bin/hvdcp
-    class core
-    user root
-    disabled
-
-on property:persist.usb.hvdcp.detect=true
-    start hvdcp
-
-on property:persist.usb.hvdcp.detect=false
-    stop hvdcp
-
-service charger_monitor /system/bin/charger_monitor
-    user root
-    group root
-    disabled
-
-service qbcharger /charger -m 1
-    disabled
-    oneshot
-
-on property:sys.qbcharger.enable=true
-    start qbcharger
-
-on property:sys.qbcharger.enable=false
-    stop qbcharger
-
-service diag_mdlog_start /system/bin/diag_mdlog_system
-    class late_start
-    user shell
-    group system oem_2901 sdcard_rw sdcard_r media_rw
-    disabled
-    oneshot
-
-service diag_mdlog_stop /system/bin/diag_mdlog_system -k
-    class late_start
-    user shell
-    group system oem_2901 sdcard_rw sdcard_r media_rw
-    disabled
-    oneshot
-
-service qlogd /system/xbin/qlogd
-    socket qlogd stream 0662 system system
-    class main
-    disabled
-on property:persist.sys.qlogd=1
-    start qlogd
-on property:persist.sys.qlogd=0
-    stop qlogd
-
-service vm_bms /vendor/bin/vm_bms
-    user root
-    group root
-    disabled
-
-service vendor.msm_irqbalance /vendor/bin/msm_irqbalance -f /system/vendor/etc/msm_irqbalance.conf
-    class core
-    user root
-    group root
-    disabled
-
-service vendor.msm_irqbal_lb /vendor/bin/msm_irqbalance -f /system/vendor/etc/msm_irqbalance_little_big.conf
-    class core
-    user root
-    group root
-    disabled
-
-service vendor.msm_irqbl_sdm630 /vendor/bin/msm_irqbalance -f /system/vendor/etc/msm_irqbalance_sdm630.conf
-    class core
-    user root
-    group root
-    disabled
-
-# service for USERDEBUG
-service vendor.LKCore-dbg /vendor/bin/LKCore
-    class late_start
-    oneshot
-    disabled
-    user root
-    group root system log diag net_raw
-
-# service for USER
-service vendor.LKCore-rel /vendor/bin/LKCore
-    class late_start
-    oneshot
-    disabled
-    user system
-    group system log diag
-
-service qseeproxydaemon /system/vendor/bin/qseeproxydaemon
-    class late_start
-    user system
-    group system
-
-service esepmdaemon /system/vendor/bin/esepmdaemon
-    class core
-    user system
-    group nfc
-
-on charger
-#    setprop persist.sys.usb.config mass_storage
-    load_system_props
-    start qcom-post-boot
-
-#add poweroffhandler
-service poweroffhandler /system/vendor/bin/poweroffhandler
-    class core
-    user media
-    group graphics audio
-    disabled
-    oneshot
-
-on property:vendor.display.lcd_density=*
-    setprop ro.sf.lcd_density ${vendor.display.lcd_density}
-
-# Logcat dump daemon, dumps logs to logdump partition
-service logdumpd /system/bin/logcat -b all -v threadtime -D -w /dev/block/bootdevice/by-name/logdump
-    class core
-    writepid /dev/cpuset/system-background/tasks
-    seclabel u:r:logdumpd:s0
-    disabled
-
-# Logdumpd is enabled only for userdebug non-perf build
-on property:ro.logdumpd.enabled=1
-    start logdumpd
-
-# Set vendor-ril lib path based on Meta version
-on property:vendor.rild.libpath=*
-    setprop rild.libpath ${vendor.rild.libpath}
-
-on property:ro.vendor.radio.noril=*
-    setprop ro.radio.noril ${ro.vendor.radio.noril}
-
-service seemp_healthd /vendor/bin/seemp_healthd
-    class late_start
-    user system
-    group system
-
-service vendor.power_off_alarm /vendor/bin/power_off_alarm
-    class core
-    group system
-    disabled
-    oneshot
-
-service vendor.move_time_data /system/bin/move_time_data.sh
-    class main
-    user system
-    group system
-    disabled
-    oneshot
-
-service vendor.hbtp /vendor/bin/hbtp_daemon
-     class main
-     user system
-     group system
-     capabilities SYS_NICE
-     disabled
-
-#service chre /vendor/bin/chre
-#    class late_start
-#    user system
-#    group system
-#    socket chre seqpacket 0660 root system
-#    shutdown critical
-
-on property:vendor.chre.enabled=0
-   stop chre
-
-service bugreport /system/bin/dumpstate -d -p -B -z -o /data/user_de/0/com.android.shell/files/bugreports/bugreport
-    class main
-    disabled
-    oneshot
-    keycodes 114 115 116
-
-#Set GPU Opengles version
-on property:vendor.opengles.version=*
-    setprop ro.opengles.version ${vendor.opengles.version}
-
-#Set gpu available frequencies property
-on property:vendor.gpu.available_frequencies=*
-    setprop ro.vendor.gpu.available_frequencies ${vendor.gpu.available_frequencies}
-
-service vendor.audio-hal-2-0 /vendor/bin/hw/android.hardware.audio@2.0-service
-    override
-    class hal
-    user audioserver
-    # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)
-    group audio camera drmrpc inet media mediadrm net_bt net_bt_admin net_bw_acct oem_2901 wakelock
-    capabilities BLOCK_SUSPEND
-    ioprio rt 4
-    writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks
-    # audioflinger restarts itself when it loses connection with the hal
-    # and its .rc file has an "onrestart restart audio-hal" rule, thus
-    # an additional auto-restart from the init process isn't needed.
-    oneshot
-    interface android.hardware.audio@5.0::IDevicesFactory default
-    interface android.hardware.audio@4.0::IDevicesFactory default
-    interface android.hardware.audio@2.0::IDevicesFactory default
-
-service vendor.contexthub-hal-1-0 /vendor/bin/hw/android.hardware.contexthub@1.0-service
-    override
-    class hal
-    interface android.hardware.contexthub@1.0::IContexthub default
-    user system
-    group system
-    disabled
