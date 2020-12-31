@@ -69,8 +69,13 @@ PRODUCT_PACKAGES += \
     com.android.nfc_extras
 
 # Power
+PRODUCT_PACKAGES += \
+    android.hardware.power@1.3-service.m51
+
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.xml
+    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json
+
+#    $(DEVICE_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.xml
 
 # Recovery
 PRODUCT_PACKAGES += \
