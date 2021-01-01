@@ -4,5 +4,6 @@
  * Copyright (C) 2020 The LineageOS Project
 -->
 <resources>
-    <integer name="config_chargingFastThreshold">10800000</integer>
+    <!-- 25W fast charging -->
+    <integer name="config_chargingFastThreshold">25000000</integer>
 </resources>
