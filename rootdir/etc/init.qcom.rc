@@ -1021,3 +1021,7 @@ service qfp-daemon /vendor/bin/qfp-daemon
 	user system
 	group system drmrpc diag input
 
+service charger /charger
+    class charger
+    critical
+    seclabel u:r:charger:s0

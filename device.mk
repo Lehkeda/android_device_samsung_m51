@@ -38,7 +38,11 @@ PRODUCT_PACKAGES += \
     audio.a2dp.default
 
 PRODUCT_COPY_FILES += \
-	$(DEVICE_PATH)/configs/audio_policy_configuration.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/audio_policy_configuration.xml
+	$(DEVICE_PATH)/configs/audio_policy_configuration.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/audio_policy_configuration.xml \
+	$(DEVICE_PATH)/configs/a2dp_audio_policy_configuration.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/a2dp_audio_policy_configuration.xml \
+	$(DEVICE_PATH)/configs/audio_policy_volumes.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/audio_policy_volumes.xml \
+	$(DEVICE_PATH)/configs/default_volume_tables.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/default_volume_tables.xml \
+	$(DEVICE_PATH)/configs/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/r_submix_audio_policy_configuration.xml
 
 # Camera
 PRODUCT_PACKAGES += \
@@ -48,6 +52,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.fingerprint.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.hardware.fingerprint.xml
 
+# Face unlock feature
+PRODUCT_COPY_FILES += \
+	frameworks/native/data/etc/android.hardware.biometrics.face.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.hardware.biometrics.face.xml
 # Init
 PRODUCT_PACKAGES += \
     fstab.qcom \
@@ -66,15 +73,17 @@ PRODUCT_PACKAGES += \
     libnfc-nci \
     libnfc_nci_jni \
     NfcNci \
-    Tag
+    Tag \
+    com.android.nfc_extras
 
 # Power
+# Disable building power HAL for now as it causing the device to stuck on bootanimation
+# due to linker can't link libperWfmgr.so
 #PRODUCT_PACKAGES += \
 #    android.hardware.power@1.3-service.m51
 
 #PRODUCT_COPY_FILES += \
-#    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json
-
+#    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json \
 #    $(DEVICE_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.xml
 
 # Recovery
@@ -91,19 +100,18 @@ PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl.samsung-m51
 
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-    frameworks/native/data/etc/android.hardware.sensor.hifi_sensors.xml:system/etc/permissions/android.hardware.sensor.hifi_sensors.xml
+    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml
 
 # Telephony
-#PRODUCT_PACKAGES += \
-#    telephony-ext
+PRODUCT_PACKAGES += \
+    telephony-ext
 
-#PRODUCT_BOOT_JARS += \
-#    telephony-ext
+PRODUCT_BOOT_JARS += \
+    telephony-ext
 
 # Trust HAL
-#PRODUCT_PACKAGES += \
-#    lineage.trust@1.0-service
+PRODUCT_PACKAGES += \
+    lineage.trust@1.0-service
 
 # GSI AVB Public Keys
 PRODUCT_PACKAGES += \
@@ -114,3 +122,13 @@ PRODUCT_PACKAGES += \
 # Skip Mount
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/skip_mount.cfg:system/etc/init/config/skip_mount.cfg
+
+# FM
+PRODUCT_PACKAGES += \
+    FMRadio
+
+# Offline Charger
+PRODUCT_PACKAGES += \
+    charger \
+    charger_res_images \
+    lineage_charger_res_images
