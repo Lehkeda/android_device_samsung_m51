@@ -76,6 +76,9 @@ PRODUCT_PACKAGES += \
     Tag \
     com.android.nfc_extras
 
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/configs/libnfc-nci.conf:system/etc/libnfc-nci.conf
+
 # Power
 # Disable building power HAL for now as it causing the device to stuck on bootanimation
 # due to linker can't link libperWfmgr.so
