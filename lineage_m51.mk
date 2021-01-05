@@ -24,10 +24,10 @@ PRODUCT_GMS_CLIENTID_BASE := android-samsung
 
 # Screen density
 # Device uses high-density artwork where available
-PRODUCT_AAPT_CONFIG := xlarge
-PRODUCT_AAPT_PREF_CONFIG := xxxhdpi
+PRODUCT_AAPT_CONFIG := large
+PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 # A list of dpis to select prebuilt apk, in precedence order.
-PRODUCT_AAPT_PREBUILT_DPI := xxxhdpi xxhdpi xhdpi hdpi
+PRODUCT_AAPT_PREBUILT_DPI :=xxhdpi xhdpi hdpi
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 2400

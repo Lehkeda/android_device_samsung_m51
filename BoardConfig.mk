@@ -6,6 +6,7 @@
 
 BOARD_VENDOR := samsung
 DEVICE_PATH := device/samsung/m51
+ALLOW_MISSING_DEPENDENCIES=true
 
 # Platform
 BOARD_VENDOR := samsung
@@ -52,7 +53,7 @@ TARGET_BOOTLOADER_BOARD_NAME := sm6150
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
 # HIDL
-DEVICE_FRAMEWORK_MANIFEST_FILE := $(DEVICE_PATH)/framework_manifest.xml
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/framework_manifest.xml
 
 # Kernel
 TARGET_KERNEL_ARCH := arm64
@@ -157,18 +158,19 @@ BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
+BOARD_AVB_ROLLBACK_INDEX := 0
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 
 # Properties
+BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 
 # Security
-VENDOR_SECURITY_PATCH := 2020-11-01
+#VENDOR_SECURITY_PATCH := 2020-11-01
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
 
 # inherit from the proprietary version
--include vendor/samsung/m51/BoardConfigVendor.mk
+#-include vendor/samsung/m51/BoardConfigVendor.mk
 

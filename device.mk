@@ -6,10 +6,10 @@
 
 DEVICE_PATH := device/samsung/m51
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+#$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
 # Call the proprietary setup
-$(call inherit-product, vendor/samsung/m51/m51-vendor.mk)
+#$(call inherit-product, vendor/samsung/m51/m51-vendor.mk)
 
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
@@ -25,6 +25,7 @@ PRODUCT_PACKAGE_OVERLAYS += \
     $(DEVICE_PATH)/overlay-lineage
 
 PRODUCT_ENFORCE_RRO_TARGETS += *
+
 PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += \
     $(DEVICE_PATH)/overlay-lineage/lineage-sdk \
     $(DEVICE_PATH)/overlay-lineage/packages/apps/Snap
@@ -65,15 +66,14 @@ PRODUCT_PACKAGES += \
     libnfc-nci \
     libnfc_nci_jni \
     NfcNci \
-    Tag \
-    com.android.nfc_extras
+    Tag
 
 # Power
-PRODUCT_PACKAGES += \
-    android.hardware.power@1.3-service.m51
+#PRODUCT_PACKAGES += \
+#    android.hardware.power@1.3-service.m51
 
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json
+#PRODUCT_COPY_FILES += \
+#    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json
 
 #    $(DEVICE_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.xml
 
@@ -88,18 +88,29 @@ PRODUCT_PACKAGES += \
 
 # Sensors
 PRODUCT_PACKAGES += \
-    android.hardware.sensors@1.0-impl.m51
+    android.hardware.sensors@1.0-impl.samsung-m51
 
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml
+    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
+    frameworks/native/data/etc/android.hardware.sensor.hifi_sensors.xml:system/etc/permissions/android.hardware.sensor.hifi_sensors.xml
 
 # Telephony
-PRODUCT_PACKAGES += \
-    telephony-ext
+#PRODUCT_PACKAGES += \
+#    telephony-ext
 
-PRODUCT_BOOT_JARS += \
-    telephony-ext
+#PRODUCT_BOOT_JARS += \
+#    telephony-ext
 
 # Trust HAL
+#PRODUCT_PACKAGES += \
+#    lineage.trust@1.0-service
+
+# GSI AVB Public Keys
 PRODUCT_PACKAGES += \
-    lineage.trust@1.0-service
+    q-gsi.avbpubkey \
+    r-gsi.avbpubkey \
+    s-gsi.avbpubkey
+
+# Skip Mount
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/skip_mount.cfg:system/etc/init/config/skip_mount.cfg

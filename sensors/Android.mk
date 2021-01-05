@@ -5,7 +5,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := android.hardware.sensors@1.0-impl.m51
+LOCAL_MODULE := android.hardware.sensors@1.0-impl.samsung-m51
 LOCAL_MODULE_TAGS  := optional
 LOCAL_VENDOR_MODULE := true
 
@@ -36,3 +36,4 @@ LOCAL_POST_INSTALL_CMD += ; ln -sf $(LOCAL_MODULE).so $(LOCAL_MODULE_PATH_32)/hw
 LOCAL_POST_INSTALL_CMD += ; ln -sf $(LOCAL_MODULE).so $(LOCAL_MODULE_PATH_64)/hw/android.hardware.sensors@1.0-impl.so
 
 include $(BUILD_SHARED_LIBRARY)
+
