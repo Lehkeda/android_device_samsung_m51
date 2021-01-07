@@ -93,14 +93,11 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/libnfc-nci.conf:system/etc/libnfc-nci.conf
 
 # Power
-# Disable building power HAL for now as it causing the device to stuck on bootanimation
-# due to linker can't link libperWfmgr.so
-#PRODUCT_PACKAGES += \
-#    android.hardware.power@1.3-service.m51
+PRODUCT_PACKAGES += \
+    android.hardware.power@1.2-service-qti
 
-#PRODUCT_COPY_FILES += \
-#    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json \
-#    $(DEVICE_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.xml
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.xml
 
 # Recovery
 PRODUCT_PACKAGES += \
