@@ -52,7 +52,7 @@ TARGET_NO_BOOTLOADER := true
 TARGET_BOOTLOADER_BOARD_NAME := sm6150
 
 # Charger
-#BOARD_CHARGER_ENABLE_SUSPEND := true
+BOARD_CHARGER_ENABLE_SUSPEND := true
 
 # HIDL
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/framework_manifest.xml
@@ -165,6 +165,7 @@ BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 # Properties
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
+TARGET_PRODUCT_PROP += $(DEVICE_PATH)/product.prop
 
 # Security
 #VENDOR_SECURITY_PATCH := 2020-11-01
@@ -172,11 +173,11 @@ TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
 
-# inherit from the proprietary version
-#-include vendor/samsung/m51/BoardConfigVendor.mk
-
 # Face unlock
 TARGET_FACE_UNLOCK_SUPPORTED := true
 
 # Screen HDR
 TARGET_HAS_HDR_DISPLAY := true
+
+# inherit from the proprietary version
+-include vendor/samsung/m51/BoardConfigVendor.mk

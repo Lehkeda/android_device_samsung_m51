@@ -9,7 +9,7 @@ DEVICE_PATH := device/samsung/m51
 #$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
 # Call the proprietary setup
-#$(call inherit-product, vendor/samsung/m51/m51-vendor.mk)
+$(call inherit-product, vendor/samsung/m51/m51-vendor.mk)
 
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
@@ -94,10 +94,10 @@ PRODUCT_COPY_FILES += \
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power@1.2-service-qti
+    android.hardware.power@1.3-service.m51
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.xml
+    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json
 
 # Recovery
 PRODUCT_PACKAGES += \
