@@ -141,7 +141,8 @@ PRODUCT_COPY_FILES += \
 
 # FM
 PRODUCT_PACKAGES += \
-    FMRadio
+    FMRadio \
+    libfmjni
 
 # Offline Charger
 PRODUCT_PACKAGES += \
