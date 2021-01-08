@@ -68,8 +68,8 @@ TARGET_KERNEL_CLANG_COMPILE := true
 BOARD_KERNEL_IMAGE_NAME := Image.gz
 #BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
-TARGET_KERNEL_CLANG_PATH := /home/hesham/data/llvm8/toolchains/llvm-Snapdragon_LLVM_for_Android_8.0/prebuilt/linux-x86_64
-TARGET_KERNEL_CLANG_VERSION := 8
+#TARGET_KERNEL_CLANG_PATH := /home/hesham/data/llvm8/toolchains/llvm-Snapdragon_LLVM_for_Android_8.0/prebuilt/linux-x86_64
+#TARGET_KERNEL_CLANG_VERSION := 8
 
 # Boot
 BOARD_BOOT_HEADER_VERSION := 2
