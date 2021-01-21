@@ -158,7 +158,7 @@ PRODUCT_PRIVATE_SEPOLICY_DIRS += \
     device/qcom/sepolicy/product/private
 
 BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
-
+$(call inherit-product, device/rr/sepolicy/common/sepolicy.mk)
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
