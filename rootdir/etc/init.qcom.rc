@@ -1055,3 +1055,15 @@ service qfp-daemon /vendor/bin/qfp-daemon
 	class late_start
 	user system
 	group system drmrpc diag input
+
+service gsicharger /bin/charger
+    class gsicharger
+    user system
+    group system shell input graphics wakelock
+
+on charger && property:ro.hardware=qcom
+    write /sys/class/leds/lcd-backlight/trigger "backlight"
+    write /sys/class/android_usb/android0/enable 1
+
+on charger
+    class_start gsicharger
