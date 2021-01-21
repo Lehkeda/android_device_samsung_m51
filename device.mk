@@ -36,6 +36,12 @@ PRODUCT_PACKAGES += \
 # No A/B
 AB_OTA_UPDATER := false
 
+# DRM
+PRODUCT_PACKAGES += \
+    android.hardware.drm@1.0-impl \
+    android.hardware.drm@1.0-service \
+    android.hardware.drm@1.1-service.clearkey
+
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
