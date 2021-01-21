@@ -182,5 +182,8 @@ TARGET_FACE_UNLOCK_SUPPORTED := true
 # Screen HDR
 TARGET_HAS_HDR_DISPLAY := true
 
+# Treble
+BOARD_VNDK_VERSION := current
+
 # inherit from the proprietary version
 -include vendor/samsung/m51/BoardConfigVendor.mk
