@@ -8,14 +8,20 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
-# Inherit from r5q device
+# Inherit from m51 device
 $(call inherit-product, device/samsung/m51/device.mk)
 
-# Inherit some common Lineage stuff.
-$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+# Inherit RR stuff
+$(call inherit-product, vendor/rr/config/common_full_phone.mk)
+
+# RR Wallpapers
+BUILD_RR_WALLPAPERS := true
+
+# RR build type
+RR_BUILDTYPE := UnOfficial
 
 # Device identifier. This must come after all inclusions.
-PRODUCT_NAME := lineage_m51
+PRODUCT_NAME := rr_m51
 PRODUCT_DEVICE := m51
 PRODUCT_BRAND := samsung
 PRODUCT_MODEL := SM-M515F
