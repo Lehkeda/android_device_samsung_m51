@@ -123,10 +123,6 @@ PRODUCT_PACKAGES += \
     r-gsi.avbpubkey \
     s-gsi.avbpubkey
 
-# Skip Mount
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/skip_mount.cfg:system/etc/init/config/skip_mount.cfg
-
 # FM
 PRODUCT_PACKAGES += \
     FMRadio \
