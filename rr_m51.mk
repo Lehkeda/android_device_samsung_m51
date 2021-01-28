@@ -13,6 +13,7 @@ $(call inherit-product, device/samsung/m51/device.mk)
 
 # Inherit RR stuff
 $(call inherit-product, vendor/rr/config/common_full_phone.mk)
+#$(call inherit-product, device/rr/sepolicy/common/sepolicy.mk)
 
 # RR Wallpapers
 BUILD_RR_WALLPAPERS := true
