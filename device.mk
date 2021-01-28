@@ -62,7 +62,8 @@ PRODUCT_COPY_FILES += \
 # Init
 PRODUCT_PACKAGES += \
     fstab.qcom \
-    init.qcom.rc
+    init.qcom.rc \
+    ueventd.qcom.rc
 
 # LiveDisplay
 PRODUCT_PACKAGES += \
