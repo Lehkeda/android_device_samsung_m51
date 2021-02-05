@@ -128,7 +128,10 @@ PRODUCT_PACKAGES += \
 # FM
 PRODUCT_PACKAGES += \
     FMRadio \
-    libfmjni
+    FM2
+
+PRODUCT_BOOT_JARS += \
+    qcom.fmradio
 
 # Offline Charger
 PRODUCT_PACKAGES += \
