@@ -38,7 +38,10 @@ AB_OTA_UPDATER := false
 
 # Audio
 PRODUCT_PACKAGES += \
-    audio.a2dp.default
+    audio.a2dp.default \
+    audio.bluetooth.default \
+    audio.r_submix.default \
+    android.hardware.bluetooth.audio@2.0-impl
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/audio/mixer_paths_tavil.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/mixer_paths_tavil.xml \
@@ -138,3 +141,14 @@ PRODUCT_PACKAGES += \
     charger \
     charger_res_images \
     lineage_charger_res_images
+
+# WiFi Display
+PRODUCT_PACKAGES += \
+    libdisplayconfig \
+    libdisplayconfig.vendor \
+    libnl \
+    libqdMetaData \
+    libqdMetaData.system
+
+#PRODUCT_BOOT_JARS += \
+#    WfdCommon
