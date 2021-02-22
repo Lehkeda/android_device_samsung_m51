@@ -6,3 +6,6 @@ persist.bluetooth.a2dp_offload.cap=sbc-aac-aptx-aptxhd-ldac
 persist.bluetooth.a2dp_offload.disabled=true
 ro.bluetooth.a2dp_offload.supported=false
 vendor.audio.feature.a2dp_offload.enable=false
+
+# RIL
+ro.telephony.default_network=9,9
