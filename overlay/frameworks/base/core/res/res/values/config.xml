@@ -1005,9 +1005,6 @@
          and one pSIM) -->
     <integer name="config_num_physical_slots">2</integer>
      
-    <!-- Should the pinner service pin the Home application? -->
-    <bool name="config_pinnerHomeApp">true</bool>
-
     <!-- Pinner -->
     <string-array translatable="false" name="config_defaultPinnerServiceFiles">
         <item>"/system/framework/arm64/boot-framework.oat"</item>
