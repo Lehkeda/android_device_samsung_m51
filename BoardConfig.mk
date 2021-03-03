@@ -201,12 +201,33 @@ TARGET_USES_DRM_PP := true
 TARGET_USES_GRALLOC1 := true
 TARGET_USES_HWC2 := true
 TARGET_USES_ION := true
+TARGET_USES_NEW_ION_API :=true
+TARGET_USES_QCOM_BSP := false
+TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
 TARGET_USES_QTI_MAPPER_2_0 := true
 TARGET_USES_QTI_MAPPER_EXTENSIONS_1_1 := true
 
 # Media
 TARGET_DISABLED_UBWC := true
 TARGET_USES_MEDIA_EXTENSIONS := true
+
+#Enable PD locater/notifier
+TARGET_PD_SERVICE_ENABLED := true
+
+#Enable peripheral manager
+TARGET_PER_MGR_ENABLED := true
+
+# Enable sensor multi HAL
+USE_SENSOR_MULTI_HAL := true
+
+# Enable sensor Version V_2
+USE_SENSOR_HAL_VER := 2.0
+
+#Enable LM
+TARGET_USES_LM := true
+
+# Enable QG user space
+PMIC_QG_SUPPORT := true
 
 # inherit from the proprietary version
 -include vendor/samsung/m51/BoardConfigVendor.mk
