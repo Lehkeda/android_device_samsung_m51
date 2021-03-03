@@ -120,6 +120,10 @@ PRODUCT_COPY_FILES += \
 
 # Telephony
 PRODUCT_PACKAGES += \
+    qti_telephony_hidl_wrapper.xml \
+    qti_telephony_utils.xml \
+    qti-telephony-hidl-wrapper \
+    qti-telephony-utils \
     telephony-ext
 
 PRODUCT_BOOT_JARS += \
@@ -139,11 +143,17 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     FM2 \
     libqcomfm_jni \
-    init.qti.fm.sh \
     qcom.fmradio
 
-PRODUCT_BOOT_JARS += \
-    qcom.fmradio
+#    init.qti.fm.sh
+
+
+#PRODUCT_BOOT_JARS += \
+#    qcom.fmradio
+
+# Health
+PRODUCT_PACKAGES += \
+    android.hardware.health@2.0-service
 
 # Offline Charger
 PRODUCT_PACKAGES += \
@@ -162,7 +172,31 @@ PRODUCT_PACKAGES += \
 #PRODUCT_BOOT_JARS += \
 #    WfdCommon
 
+# Thermal
+PRODUCT_PACKAGES += \
+    android.hardware.thermal@1.0-impl \
+    android.hardware.thermal@1.0-service
+
 # IMS
 PRODUCT_PACKAGES += \
     ims-ext-common \
     ims_ext_common.xml
+
+# Display/Graphics
+PRODUCT_PACKAGES += \
+    android.hardware.graphics.composer@2.3-service \
+    android.hardware.graphics.mapper@2.0-impl-qti-display \
+    libdisplayconfig \
+    libtinyxml \
+    libvulkan \
+    vendor.qti.hardware.display.allocator-service
+
+# Display interfaces
+PRODUCT_PACKAGES += \
+    vendor.qti.hardware.display.composer@1.0.vendor \
+    vendor.qti.hardware.display.composer@2.0.vendor \
+    vendor.qti.hardware.display.mapper@1.1.vendor \
+
+# Touchscreen
+PRODUCT_PACKAGES += \
+    libtinyxml2

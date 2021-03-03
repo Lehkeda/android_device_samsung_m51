@@ -208,6 +208,14 @@ TARGET_USES_QTI_MAPPER_EXTENSIONS_1_1 := true
 TARGET_DISABLED_UBWC := true
 TARGET_USES_MEDIA_EXTENSIONS := true
 
+# RIL
+ENABLE_VENDOR_RIL_SERVICE := true
+TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
+TARGET_USES_PRE_UPLINK_FEATURES_NETMGRD := true
+
+# ANT+
+BOARD_ANT_WIRELESS_DEVICE := "qualcomm-hidl"
+
 # inherit from the proprietary version
 -include vendor/samsung/m51/BoardConfigVendor.mk
 
