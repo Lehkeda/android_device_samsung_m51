@@ -9,7 +9,7 @@ DEVICE_PATH := device/samsung/m51
 #$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
 # Call the proprietary setup
-$(call inherit-product, vendor/samsung/m51/m51-vendor.mk)
+#$(call inherit-product, vendor/samsung/m51/m51-vendor.mk)
 
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
@@ -40,15 +40,15 @@ PRODUCT_PACKAGES += \
 AB_OTA_UPDATER := false
 
 # DRM
-PRODUCT_PACKAGES += \
-    android.hardware.drm@1.0-impl \
-    android.hardware.drm@1.0-service \
-    android.hardware.drm@1.1-service.clearkey
+#PRODUCT_PACKAGES += \
+#    android.hardware.drm@1.0-impl \
+#    android.hardware.drm@1.0-service \
+#    android.hardware.drm@1.1-service.clearkey
 
 # HIDL
-PRODUCT_PACKAGES += \
-    android.hidl.base@1.0_system \
-    android.hidl.manager@1.0_system
+#PRODUCT_PACKAGES += \
+#    android.hidl.base@1.0_system \
+#    android.hidl.manager@1.0_system
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -77,30 +77,30 @@ PRODUCT_PACKAGES += \
     init.qcom.rc
 
 # LiveDisplay
-PRODUCT_PACKAGES += \
-    lineage.livedisplay@2.0-service.samsung-qcom
+#PRODUCT_PACKAGES += \
+#    lineage.livedisplay@2.0-service.samsung-qcom
 
 # Keylayout
 PRODUCT_COPY_FILES += \
     device/samsung/m51/keylayout/gpio-keys.kl:$(TARGET_COPY_OUT_SYSTEM)/usr/keylayout/gpio-keys.kl
 
 # NFC
-PRODUCT_PACKAGES += \
-    libnfc-nci \
-    libnfc_nci_jni \
-    NfcNci \
-    Tag \
-    com.android.nfc_extras
+#PRODUCT_PACKAGES += \
+#    libnfc-nci \
+#    libnfc_nci_jni \
+#    NfcNci \
+#    Tag \
+#    com.android.nfc_extras
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/libnfc-nci.conf:system/etc/libnfc-nci.conf
 
 # Power
-PRODUCT_PACKAGES += \
-    android.hardware.power@1.3-service.m51
+#PRODUCT_PACKAGES += \
+#    android.hardware.power@1.3-service.m51
 
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json
+#PRODUCT_COPY_FILES += \
+#    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json
 
 # Recovery
 PRODUCT_PACKAGES += \
@@ -112,18 +112,18 @@ PRODUCT_PACKAGES += \
     SamsungDoze
 
 # Sensors
-PRODUCT_PACKAGES += \
-    android.hardware.sensors@1.0-impl.samsung-m51
+#PRODUCT_PACKAGES += \
+#    android.hardware.sensors@1.0-impl.samsung-m51
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml
 
 # Telephony
-PRODUCT_PACKAGES += \
-    telephony-ext
+#PRODUCT_PACKAGES += \
+#    telephony-ext
 
-PRODUCT_BOOT_JARS += \
-    telephony-ext
+#PRODUCT_BOOT_JARS += \
+#    telephony-ext
 
 # Trust HAL
 PRODUCT_PACKAGES += \
@@ -136,14 +136,14 @@ PRODUCT_PACKAGES += \
     s-gsi.avbpubkey
 
 # FM
-PRODUCT_PACKAGES += \
-    FM2 \
-    libqcomfm_jni \
-    init.qti.fm.sh \
-    qcom.fmradio
+#PRODUCT_PACKAGES += \
+#    FM2 \
+#    libqcomfm_jni \
+#    init.qti.fm.sh \
+#    qcom.fmradio
 
-PRODUCT_BOOT_JARS += \
-    qcom.fmradio
+#PRODUCT_BOOT_JARS += \
+#    qcom.fmradio
 
 # Offline Charger
 PRODUCT_PACKAGES += \
@@ -152,20 +152,20 @@ PRODUCT_PACKAGES += \
     lineage_charger_res_images
 
 # WiFi Display
-PRODUCT_PACKAGES += \
-    libdisplayconfig \
-    libdisplayconfig.vendor \
-    libnl \
-    libqdMetaData \
-    libqdMetaData.system
+#PRODUCT_PACKAGES += \
+#    libdisplayconfig \
+#    libdisplayconfig.vendor \
+#    libnl \
+#    libqdMetaData \
+#    libqdMetaData.system
 
 #PRODUCT_BOOT_JARS += \
 #    WfdCommon
 
 # IMS
-PRODUCT_PACKAGES += \
-    ims-ext-common \
-    ims_ext_common.xml
+#PRODUCT_PACKAGES += \
+#    ims-ext-common \
+#    ims_ext_common.xml
 
 # Skip mount
 PRODUCT_COPY_FILES += $(DEVICE_PATH)/skip_mount.cfg:system/etc/init/config/skip_mount.cfg
