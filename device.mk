@@ -173,3 +173,7 @@ PRODUCT_COPY_FILES += $(DEVICE_PATH)/skip_mount.cfg:system/etc/init/config/skip_
 # Include SU
 PRODUCT_PACKAGES += \
     su
+
+# ADB Root
+PRODUCT_PACKAGES += \
+    adb_root
