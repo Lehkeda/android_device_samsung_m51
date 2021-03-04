@@ -9,9 +9,3 @@ vendor.audio.feature.a2dp_offload.enable=false
 
 # RIL
 ro.telephony.default_network=9,9
-
-# PHH stuff
-persist.sys.phh.samsung_colorspace=true
-persist.sys.phh.samsung_sensors=true
-persist.sys.phh.samsung.camera_ids=true
-#persist.sys.phh.radio.max_connections_gsm=
