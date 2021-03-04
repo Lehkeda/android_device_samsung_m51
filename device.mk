@@ -169,3 +169,7 @@ PRODUCT_PACKAGES += \
 
 # Skip mount
 PRODUCT_COPY_FILES += $(DEVICE_PATH)/skip_mount.cfg:system/etc/init/config/skip_mount.cfg
+
+# Include SU
+PRODUCT_PACKAGES += \
+    su

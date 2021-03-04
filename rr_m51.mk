@@ -21,6 +21,9 @@ BUILD_RR_WALLPAPERS := true
 # RR build type
 RR_BUILDTYPE := UnOfficial
 
+# Include SU
+WITH_SU := true
+
 # Device identifier. This must come after all inclusions.
 PRODUCT_NAME := rr_m51
 PRODUCT_DEVICE := m51
