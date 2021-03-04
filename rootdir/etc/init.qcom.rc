@@ -23,6 +23,9 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+on early-init
+    write /dev/watchdog "V"
+
 on init
     # LiveDisplay
     chown system system /sys/class/lcd/panel/power_reduce
