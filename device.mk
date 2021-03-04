@@ -96,11 +96,11 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/libnfc-nci.conf:system/etc/libnfc-nci.conf
 
 # Power
-PRODUCT_PACKAGES += \
-    android.hardware.power@1.3-service.m51
+#PRODUCT_PACKAGES += \
+#    android.hardware.power@1.3-service.m51
 
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json
+#PRODUCT_COPY_FILES += \
+#    $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/$(PLATFORM_VNDK_VERSION)/etc/powerhint.json
 
 # Recovery
 PRODUCT_PACKAGES += \
