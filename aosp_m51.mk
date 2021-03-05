@@ -11,21 +11,14 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # Inherit from m51 device
 $(call inherit-product, device/samsung/m51/device.mk)
 
-# Inherit RR stuff
-$(call inherit-product, vendor/rr/config/common_full_phone.mk)
-#$(call inherit-product, device/rr/sepolicy/common/sepolicy.mk)
+# Inherit some common PixelExperience stuff.
+$(call inherit-product, vendor/aosp/config/common_full_phone.mk)
 
-# RR Wallpapers
-BUILD_RR_WALLPAPERS := true
-
-# RR build type
-RR_BUILDTYPE := UnOfficial
-
-# Include SU
-WITH_SU := true
+TARGET_GAPPS_ARCH := arm64
+TARGET_BOOT_ANIMATION_RES := 1080
 
 # Device identifier. This must come after all inclusions.
-PRODUCT_NAME := rr_m51
+PRODUCT_NAME := aosp_m51
 PRODUCT_DEVICE := m51
 PRODUCT_BRAND := samsung
 PRODUCT_MODEL := SM-M515F
