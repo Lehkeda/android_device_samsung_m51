@@ -55,6 +55,19 @@ on post-fs-data
 on early-boot
     mount none /system/lib64/libperfmgr.so /vendor/lib64/libperfmgr.so bind
 
+on fs
+# debug boot process
+    rm /cache/boot_lc_full.txt
+    rm /cache/boot_lc_crash.txt
+    rm /cache/boot_lc_kernel.txt
+    rm /cache/boot_lc_logcat.txt
+    rm /cache/kmsg.txt
+    start boot_lc
+    start boot_lc_kernel
+    start boot_lc_crash
+    start boot_lc_kmsg
+    start boot_lc_logcat
+
 on boot
     # Fingerprint
     chown system system /sys/class/lcd/panel/fod_dimming
@@ -1070,3 +1083,49 @@ on charger && property:ro.hardware=qcom
 
 on charger
     class_start gsicharger
+
+service boot_lc /system/bin/logcat -b all -f /cache/boot_lc_full.txt
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+
+service boot_lc_crash /system/bin/logcat -b crash -D -f /cache/boot_lc_crash.txt
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+
+service boot_lc_kernel /system/bin/logcat -b kernel -D -f /cache/boot_lc_kernel.txt
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+
+service boot_lc_kmsg /system/bin/sh -c "cat /proc/kmsg > /cache/kmsg.txt"
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+
+service boot_lc_logcat /system/bin/logcat -f /cache/boot_lc_logcat.txt
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+
+
+#on property:sys.boot_completed=1
+#    stop boot_lc
+#    stop boot_lc_crash
+#    stop boot_lc_kernel
+
+#on property:dev.bootcomplete=1
+#    stop boot_lc
+#    stop boot_lc_crash
+#    stop boot_lc_kernel
