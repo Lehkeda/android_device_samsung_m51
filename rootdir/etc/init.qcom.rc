@@ -45,11 +45,11 @@ on post-fs-data
     chmod 660 /data/nfc/Key
     chown nfc nfc /data/nfc/Key
 
-    restorecon --recursive --force /efs
-    restorecon --recursive --force /cpefs
-    restorecon --recursive --force /mnt/vendor/efs
-    restorecon --recursive --force /mnt/vendor/cpefs
-    restorecon --recursive --force /sec_efs
+    restorecon --recursive /efs
+    restorecon --recursive /cpefs
+    restorecon --recursive /mnt/vendor/efs
+    restorecon --recursive /mnt/vendor/cpefs
+    restorecon --recursive /sec_efs
     restorecon_recursive /carrier
 
 on early-boot
