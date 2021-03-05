@@ -23,9 +23,6 @@ PRODUCT_BUILD_SUPER_PARTITION := false
 $(call inherit-product, vendor/opengapps/build/opengapps-packages.mk)
 GAPPS_VARIANT := nano
 
-# APEX
-ENABLE_APEX := true
-
 # Overlays
 PRODUCT_PACKAGE_OVERLAYS += \
     $(DEVICE_PATH)/overlay \
