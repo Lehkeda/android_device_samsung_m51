@@ -8,9 +8,6 @@ DEVICE_PATH := device/samsung/m51
 
 #$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
-# Call the proprietary setup
-$(call inherit-product, vendor/samsung/m51/m51-vendor.mk)
-
 # Enable updating of APEXes
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 
@@ -65,6 +62,7 @@ PRODUCT_COPY_FILES += \
 # Init
 PRODUCT_PACKAGES += \
     fstab.qcom \
+    recovery.fstab \
     init.qcom.rc \
     ueventd.qcom.rc
 
@@ -114,8 +112,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     telephony-ext
 
-PRODUCT_BOOT_JARS += \
-    telephony-ext
+#PRODUCT_BOOT_JARS += \
+#    telephony-ext
 
 # Trust HAL
 PRODUCT_PACKAGES += \
@@ -132,8 +130,8 @@ PRODUCT_PACKAGES += \
     FMRadio \
     FM2
 
-PRODUCT_BOOT_JARS += \
-    qcom.fmradio
+#PRODUCT_BOOT_JARS += \
+#    qcom.fmradio
 
 # Offline Charger
 PRODUCT_PACKAGES += \

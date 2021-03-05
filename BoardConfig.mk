@@ -75,7 +75,7 @@ BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb/m51.dtb
 BOARD_PREBUILT_DTBIMAGE_DIR := $(DEVICE_PATH)/prebuilt/dtb
 TARGET_KERNEL_SOURCE := kernel/samsung/m51
-TARGET_KERNEL_CONFIG := m51_defconfig
+TARGET_KERNEL_CONFIG := halium_m51_defconfig
 TARGET_KERNEL_CLANG_COMPILE := true
 BOARD_KERNEL_IMAGE_NAME := Image.gz
 #BOARD_KERNEL_SEPARATED_DTBO := true
@@ -208,7 +208,3 @@ TARGET_USES_QTI_MAPPER_EXTENSIONS_1_1 := true
 # Media
 TARGET_DISABLED_UBWC := true
 TARGET_USES_MEDIA_EXTENSIONS := true
-
-# inherit from the proprietary version
--include vendor/samsung/m51/BoardConfigVendor.mk
-
