@@ -19,6 +19,10 @@ PRODUCT_SHIPPING_API_LEVEL := 29
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := false
 
+# OpenGAPPs
+$(call inherit-product, vendor/opengapps/build/opengapps-packages.mk)
+GAPPS_VARIANT := nano
+
 # APEX
 ENABLE_APEX := true
 
