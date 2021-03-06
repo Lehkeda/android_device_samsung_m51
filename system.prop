@@ -4,10 +4,6 @@ vendor.audio.feature.fm.enable=true
 # CNE
 persist.vendor.cne.feature=1
 
-# Detect DS/SS
-import /mnt/vendor/efs/factory.prop
-import /mnt/vendor/efs/telephony.prop
-
 # Netflix custom property
 ro.netflix.bsp_rev=Q6150-17263-1
 
