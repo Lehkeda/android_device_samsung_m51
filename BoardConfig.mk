@@ -228,5 +228,5 @@ TARGET_USES_LM := true
 PMIC_QG_SUPPORT := true
 
 # inherit from the proprietary version
--include vendor/samsung/m51/BoardConfigVendor.mk
+#-include vendor/samsung/m51/BoardConfigVendor.mk
 
