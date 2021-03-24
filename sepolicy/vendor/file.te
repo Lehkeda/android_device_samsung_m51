@@ -15,3 +15,4 @@ allow spu_file labeledfs:filesystem associate;
 
 type omr_file, fs_type;
 allow omr_file labeledfs:filesystem associate;
+

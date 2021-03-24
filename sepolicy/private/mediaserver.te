@@ -1,1 +1,0 @@
-allow mediaserver vendor_file:dir { open read };

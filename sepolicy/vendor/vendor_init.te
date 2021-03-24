@@ -1,5 +1,0 @@
-type fota_data_file, domain;
-type fota_data_file_exec, exec_type, file_type;
-init_daemon_domain(fota_data_file)
-
-allow vendor_init fota_data_file:dir setattr;

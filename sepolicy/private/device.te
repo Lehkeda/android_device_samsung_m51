@@ -1,2 +1,0 @@
-type diag_device, dev_type, mlstrustedobject;
-type latency_device, dev_type;
