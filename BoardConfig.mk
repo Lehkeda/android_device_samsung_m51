@@ -8,6 +8,9 @@ BOARD_VENDOR := samsung
 DEVICE_PATH := device/samsung/m51
 ALLOW_MISSING_DEPENDENCIES=true
 
+AB_OTA_UPDATER := true
+AB_OTA_PARTITIONS := system product
+
 # Platform
 BOARD_VENDOR := samsung
 TARGET_BOARD_PLATFORM := sm6150
@@ -31,14 +34,14 @@ TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a76
 TARGET_USES_64_BIT_BINDER := true
 
 BOARD_USES_QCOM_HARDWARE := true
+TARGET_MOUNT_POINTS_SYMLINKS := true
 
 # APEX
 DEXPREOPT_GENERATE_APEX_IMAGE := true
 
 # Audio
 USE_XML_AUDIO_POLICY_CONF := 1
-USE_CUSTOM_AUDIO_POLICY := 1
-USE_XML_AUDIO_POLICY_CONF := 1
+#USE_CUSTOM_AUDIO_POLICY := 1
 
 # FM
 BOARD_HAS_QCA_FM_SOC := "cherokee"
@@ -155,12 +158,10 @@ TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)/releasetools
 
 # SELinux
 BOARD_PLAT_PRIVATE_SEPOLICY_DIR += \
-    device/samsung_slsi/sepolicy/common/private \
     $(DEVICE_PATH)/sepolicy/private
 
-
-BOARD_PLAT_PUBLIC_SEPOLICY_DIR += \
-    device/samsung_slsi/sepolicy/common/public
+#BOARD_PLAT_PUBLIC_SEPOLICY_DIR += \
+#    device/samsung_slsi/sepolicy/common/public
 
 BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
 

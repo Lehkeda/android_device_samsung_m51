@@ -10,32 +10,32 @@ ro.netflix.bsp_rev=Q6150-17263-1
 # Radio
 persist.vendor.radio.atfwd.start=true
 
-ro.opengles.version=196610
+#ro.opengles.version=196610
 ro.sf.lcd_density=420
 
-vendor.voice.path.for.pcm.voip=true
-vendor.audio.offload.multiaac.enable=true
-vendor.audio.flac.sw.decoder.24bit=true
-vendor.audio.volume.headset.gain.depcal=true
+#vendor.voice.path.for.pcm.voip=true
+#vendor.audio.offload.multiaac.enable=true
+#vendor.audio.flac.sw.decoder.24bit=true
+#vendor.audio.volume.headset.gain.depcal=true
 
 # Graphics stuff
-vendor.gralloc.disable_ubwc=0
-vendor.display.disable_scaler=0
-vendor.display.disable_inline_rotator=1
-vendor.display.disable_decimation=1
-vendor.display.enable_null_display=0
-vendor.display.disable_excl_rect=0
-vendor.display.comp_mask=0
-vendor.display.enable_default_color_mode=1
-vendor.display.enable_optimize_refresh=1
-vendor.display.disable_ui_3d_tonemap=1
-vendor.display.disable_ext_anim=1
-vendor.display.disable_hw_recovery_dump=1
-vendor.display.dataspace_saturation_matrix=1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0
-debug.stagefright.omx_default_rank.sw-audio=1
-debug.stagefright.omx_default_rank=0
-debug.stagefright.ccodec=1
-ro.frp.pst=/dev/block/persistent
+#vendor.gralloc.disable_ubwc=0
+#vendor.display.disable_scaler=0
+#vendor.display.disable_inline_rotator=1
+#vendor.display.disable_decimation=1
+#vendor.display.enable_null_display=0
+#vendor.display.disable_excl_rect=0
+#vendor.display.comp_mask=0
+#vendor.display.enable_default_color_mode=1
+#vendor.display.enable_optimize_refresh=1
+#vendor.display.disable_ui_3d_tonemap=1
+#vendor.display.disable_ext_anim=1
+#vendor.display.disable_hw_recovery_dump=1
+#vendor.display.dataspace_saturation_matrix=1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0
+#debug.stagefright.omx_default_rank.sw-audio=1
+#debug.stagefright.omx_default_rank=0
+#debug.stagefright.ccodec=1
+#ro.frp.pst=/dev/block/persistent
 
 # Fix screen recorder lag
 vendor.display.enable_default_color_mode=1

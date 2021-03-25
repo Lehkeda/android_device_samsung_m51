@@ -34,7 +34,7 @@ PRODUCT_PACKAGES += \
     NoCutoutOverlay
 
 # No A/B
-AB_OTA_UPDATER := false
+# AB_OTA_UPDATER := false
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -109,8 +109,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     telephony-ext
 
-PRODUCT_BOOT_JARS += \
-    telephony-ext
+#PRODUCT_BOOT_JARS += \
+#    telephony-ext
 
 # Trust HAL
 PRODUCT_PACKAGES += \
@@ -129,8 +129,8 @@ PRODUCT_PACKAGES += \
     init.qti.fm.sh \
     qcom.fmradio
 
-PRODUCT_BOOT_JARS += \
-    qcom.fmradio
+#PRODUCT_BOOT_JARS += \
+#    qcom.fmradio
 
 # Offline Charger
 PRODUCT_PACKAGES += \

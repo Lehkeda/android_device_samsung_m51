@@ -1,0 +1,22 @@
+[
+#    {
+#        "repository": "android_device_samsung_slsi_sepolicy",
+#        "target_path": "device/samsung_slsi/sepolicy"
+#    },
+#    {
+#        "repository": "android_hardware_samsung",
+#        "target_path": "hardware/samsung"
+#    },
+#    {
+#	"remote": "github",
+#        "repository": "LehKeda/android_kernel_samsung_m51",
+#        "target_path": "kernel/samsung/m51",
+#	"branch": "ten"
+#    },
+#    {
+#	"remote": "github",
+#        "repository": "LehKeda/android_vendor_samsung_m51",
+#        "target_path": "vendor/samsung/m51",
+#	"branch": "ten"
+#    }
+]
